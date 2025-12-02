@@ -51,14 +51,41 @@ const About = () => {
           >
             About Us
           </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-playfair font-bold text-luxury mb-6"
-          >
-            High Spirit
-          </motion.h1>
+        <section
+  className="relative min-h-[60vh] lg:min-h-[70vh] flex items-center justify-center mt-20"
+  style={{ overflow: 'visible' }}
+>
+  <div className="relative z-10 text-center px-6">
+    <motion.p
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-accent font-inter tracking-widest mb-3 uppercase text-sm"
+    >
+      ABOUT US
+    </motion.p>
+
+    <motion.h1
+      initial={{ opacity: 0, y: 28 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.15 }}
+      className="font-playfair font-bold text-luxury mb-4 text-center whitespace-normal break-words leading-tight text-[clamp(2.25rem,6vw,5.5rem)]"
+    >
+      High Spirit
+    </motion.h1>
+
+    <motion.p
+      initial={{ opacity: 0, y: 28 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.3 }}
+      className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+    >
+      Where Tradition Meets Luxury in Every Bite
+    </motion.p>
+  </div>
+</section>
+
+
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
