@@ -11,19 +11,19 @@ import { toast } from 'sonner';
 const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Message sent! We\'ll respond within 24 hours.');
+    toast.success("Message sent! We'll respond within 24 hours.");
   };
 
   const contactInfo = [
     {
       icon: MapPin,
       title: 'Location',
-      details: ['123 Luxury Lane', 'Sydney NSW 2000', 'Australia'],
+      details: ['1/57 Victoria Street', 'Bunbury 6230', 'Australia'],
     },
     {
       icon: Phone,
       title: 'Phone',
-      details: ['+61 2 3456 7890', 'Mon-Sun: 9AM - 11PM'],
+      details: ['0451382958', 'Mon-Sun: 9AM - 11PM'],
     },
     {
       icon: Mail,
@@ -33,14 +33,18 @@ const Contact = () => {
     {
       icon: Clock,
       title: 'Opening Hours',
-      details: ['Mon-Thu: 5:30PM - 11PM', 'Fri-Sat: 5:30PM - 12AM', 'Sunday: 5:30PM - 10:30PM'],
+      details: [
+        'Mon-Thu: 5:30PM - 11PM',
+        'Fri-Sat: 5:30PM - 12AM',
+        'Sunday: 5:30PM - 10:30PM',
+      ],
     },
   ];
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      
+
       {/* Hero Section */}
       <section className="relative h-[50vh] flex items-center justify-center overflow-hidden mt-20 luxury-gradient">
         <div className="relative z-10 text-center px-4">
@@ -131,7 +135,9 @@ const Contact = () => {
                 </h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <Label htmlFor="name" className="text-foreground">Your Name</Label>
+                    <Label htmlFor="name" className="text-foreground">
+                      Your Name
+                    </Label>
                     <Input
                       id="name"
                       required
@@ -140,7 +146,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="text-foreground">Email</Label>
+                    <Label htmlFor="email" className="text-foreground">
+                      Email
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -150,7 +158,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="phone" className="text-foreground">Phone (Optional)</Label>
+                    <Label htmlFor="phone" className="text-foreground">
+                      Phone (Optional)
+                    </Label>
                     <Input
                       id="phone"
                       type="tel"
@@ -159,7 +169,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="subject" className="text-foreground">Subject</Label>
+                    <Label htmlFor="subject" className="text-foreground">
+                      Subject
+                    </Label>
                     <Input
                       id="subject"
                       required
@@ -168,7 +180,9 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <Label htmlFor="message" className="text-foreground">Message</Label>
+                    <Label htmlFor="message" className="text-foreground">
+                      Message
+                    </Label>
                     <Textarea
                       id="message"
                       required
@@ -204,7 +218,7 @@ const Contact = () => {
               Find Us
             </h2>
             <p className="text-muted-foreground text-lg">
-              Located in the heart of Sydney's premium dining district
+              Located in the heart of Bunbury's premium dining district
             </p>
           </motion.div>
 
@@ -219,7 +233,7 @@ const Contact = () => {
               <div className="text-center p-8">
                 <MapPin className="w-16 h-16 mx-auto mb-4 text-accent" />
                 <p className="text-xl font-playfair text-foreground mb-2">
-                  123 Luxury Lane, Sydney NSW 2000
+                  1/57 Victoria Street, Bunbury 6230
                 </p>
                 <p className="text-muted-foreground">
                   Google Maps integration placeholder

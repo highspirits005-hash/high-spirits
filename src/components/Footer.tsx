@@ -48,18 +48,26 @@ const Footer = () => {
             <h4 className="text-xl font-playfair font-semibold text-accent mb-4">
               Quick Links
             </h4>
-            <ul className="space-y-2">
-              {['Home', 'About', 'Our Story', 'Menu', 'Gallery', 'Events'].map((link) => (
-                <li key={link}>
-                  <Link
-                    to={`/${link.toLowerCase().replace(' ', '-')}`}
-                    className="text-muted-foreground hover:text-accent transition-colors duration-300"
-                  >
-                    {link}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+           <ul className="space-y-2">
+  {['Home', 'About', 'Our Story', 'Menu', 'Gallery', 'Events'].map((link) => {
+    const path =
+      link === 'Home'
+        ? '/'
+        : `/${link.toLowerCase().replace(/\s+/g, '-')}`;
+
+    return (
+      <li key={link}>
+        <Link
+          to={path}
+          className="text-muted-foreground hover:text-accent transition-colors duration-300"
+        >
+          {link}
+        </Link>
+      </li>
+    );
+  })}
+</ul>
+
           </div>
 
           {/* Contact Info */}
