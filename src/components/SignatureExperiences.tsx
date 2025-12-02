@@ -61,9 +61,16 @@ const SignatureExperiences = () => {
           >
             Extraordinary Moments
           </motion.p>
-          <h2 className="text-5xl md:text-6xl font-playfair font-bold text-luxury mb-6">
-            Signature Experiences
-          </h2>
+       <h2
+  className="
+    font-playfair font-bold text-luxury mb-6 text-center
+    whitespace-normal break-words leading-tight
+    text-[clamp(2.2rem,6vw,4.2rem)]
+  "
+>
+  Signature Experiences
+</h2>
+
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Curated exclusively for the discerning palate, each experience is a masterpiece of culinary artistry and impeccable service
           </p>

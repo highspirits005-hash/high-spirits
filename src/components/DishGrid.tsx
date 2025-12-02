@@ -33,9 +33,16 @@ const DishGrid = () => {
           <p className="text-accent font-inter tracking-widest mb-3 uppercase text-sm">
             Culinary Excellence
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-luxury mb-4">
-            Signature Dishes
-          </h2>
+       <h2
+  className="
+    font-playfair font-bold text-luxury mb-4 text-center
+    whitespace-normal break-words leading-tight
+    text-[clamp(2rem,5.5vw,3.5rem)]
+  "
+>
+  Signature Dishes
+</h2>
+
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Handcrafted with the finest ingredients and authentic spices
           </p>

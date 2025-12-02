@@ -62,9 +62,16 @@ const IngredientsShowcase = () => {
           >
             From Farm to Table
           </motion.p>
-          <h2 className="text-5xl md:text-6xl font-playfair font-bold text-luxury mb-6">
-            Premium Ingredients
-          </h2>
+       <h2
+  className="
+    font-playfair font-bold text-luxury mb-6 text-center
+    whitespace-normal break-words leading-tight
+    text-[clamp(2.2rem,6vw,4.2rem)]
+  "
+>
+  Premium Ingredients
+</h2>
+
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             A harmonious fusion of the finest Australian produce and authentic Indian heritage ingredients
           </p>

@@ -121,9 +121,16 @@ const Index = () => {
             >
               Chef's Specials
             </motion.p>
-            <h2 className="text-5xl md:text-6xl font-playfair font-bold shimmer-text mb-6">
-              Signature Creations
-            </h2>
+           <h2
+  className="
+    font-playfair font-bold shimmer-text mb-6 text-center
+    whitespace-normal break-words leading-tight
+    text-[clamp(2.2rem,6vw,4.2rem)]
+  "
+>
+  Signature Creations
+</h2>
+
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Experience our most celebrated dishes through an immersive 3D journey
             </p>
