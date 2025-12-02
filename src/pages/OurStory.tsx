@@ -58,7 +58,7 @@ const OurStory = () => {
     text-[clamp(2.2rem,6vw,4.8rem)]
   "
 >
-  The High Spirit Story
+  The High Spirits Story
 </motion.h1>
 
           <motion.p

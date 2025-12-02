@@ -71,7 +71,7 @@ const About = () => {
       transition={{ duration: 0.8, delay: 0.15 }}
       className="font-playfair font-bold text-luxury mb-4 text-center whitespace-normal break-words leading-tight text-[clamp(2.25rem,6vw,5.5rem)]"
     >
-      High Spirit
+      High Spirits
     </motion.h1>
 
     <motion.p

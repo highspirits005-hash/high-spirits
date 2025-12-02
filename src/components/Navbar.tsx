@@ -45,7 +45,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               className="text-3xl font-playfair font-bold text-luxury tracking-wider"
             >
-              HIGH SPIRIT
+              HIGH SPIRITS
             </motion.div>
           </Link>
 

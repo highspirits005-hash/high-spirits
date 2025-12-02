@@ -10,7 +10,7 @@ const Footer = () => {
           {/* About */}
           <div>
             <h3 className="text-2xl font-playfair font-bold text-luxury mb-4">
-              HIGH SPIRIT
+              HIGH SPIRITS
             </h3>
            <p className="text-muted-foreground mb-6 leading-relaxed">
   Authentic Indian flavours crafted with passion, served in a premium fine-dining experience.
