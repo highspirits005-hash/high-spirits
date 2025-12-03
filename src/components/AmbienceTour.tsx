@@ -6,7 +6,6 @@ import VideoBackground from "./VideoBackground";
 import restaurantAmbience from "@/assets/image.jpg";
 import img2 from "@/assets/image2.jpg";
 import img3 from "@/assets/image3.jpg";
-import img4 from "@/assets/image4.jpg";
 
 const AmbienceTour = () => {
   const containerRef = useRef(null);
@@ -19,7 +18,8 @@ const AmbienceTour = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
-  const sliderImages = [restaurantAmbience, img2, img3, img4];
+  // FIXED — removed img4
+  const sliderImages = [restaurantAmbience, img2, img3];
 
   const spaces = [
     {
@@ -53,6 +53,7 @@ const AmbienceTour = () => {
       <VideoBackground overlayOpacity={0.7} />
 
       <div className="container mx-auto px-4 relative z-10">
+
         {/* Heading */}
         <motion.div style={{ opacity }} className="text-center mb-20">
           <motion.p
@@ -70,20 +71,21 @@ const AmbienceTour = () => {
           </p>
         </motion.div>
 
-        {/* === 🔥 PARALLAX IMAGE SLIDER === */}
+        {/* === PARALLAX SLIDER === */}
         <motion.div
           style={{ y, scale }}
           className="relative max-w-6xl mx-auto mb-20 rounded-3xl overflow-hidden elegant-shadow"
         >
           <motion.div className="relative h-[600px] group overflow-hidden rounded-3xl">
+
             {/* Slider Container */}
             <motion.div
               className="flex h-full"
               animate={{
-                x: ["0%", "-100%", "-200%", "-300%", "0%"], // Loop through slides
+                x: ["0%", "-100%", "-200%", "0%"], // updated for 3 slides
               }}
               transition={{
-                duration: 40, // ⬅️ SLOWER SPEED ADDED HERE
+                duration: 40, // slower
                 repeat: Infinity,
                 ease: "linear",
               }}
@@ -118,7 +120,7 @@ const AmbienceTour = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-60" />
           </motion.div>
 
-          {/* Floating Card */}
+          {/* Floating Info Card */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -169,6 +171,7 @@ const AmbienceTour = () => {
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );
