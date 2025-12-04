@@ -3,9 +3,9 @@ import { useRef } from "react";
 import VideoBackground from "./VideoBackground";
 
 /* IMAGES FOR SLIDER */
-import restaurantAmbience from "@/assets/image.jpg";
-import img2 from "@/assets/image2.jpg";
-import img3 from "@/assets/image3.jpg";
+import restaurantAmbience from "@/assets/Image.jpg";
+import img2 from "@/assets/Image2.jpg";
+import img3 from "@/assets/Image3.jpg";
 
 const AmbienceTour = () => {
   const containerRef = useRef(null);
