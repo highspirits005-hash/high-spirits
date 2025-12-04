@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import VideoBackground from "./VideoBackground";
 
-/* IMAGES FOR SLIDER */
+/* IMAGES FOR GALLERY */
 import restaurantAmbience from "@/assets/Image.jpg";
 import img2 from "@/assets/Image2.jpg";
 import img3 from "@/assets/Image3.jpg";
@@ -18,8 +18,7 @@ const AmbienceTour = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
 
-  // FIXED — removed img4
-  const sliderImages = [restaurantAmbience, img2, img3];
+  const galleryImages = [restaurantAmbience, img2, img3];
 
   const spaces = [
     {
@@ -49,95 +48,96 @@ const AmbienceTour = () => {
   ];
 
   return (
-    <section ref={containerRef} className="py-32 relative overflow-hidden">
-      <VideoBackground overlayOpacity={0.7} />
+    <section ref={containerRef} className="py-10 relative overflow-hidden bg-[#E7EBDD]">
+      <VideoBackground overlayOpacity={0.5} />
 
       <div className="container mx-auto px-4 relative z-10">
 
-        {/* Heading */}
-        <motion.div style={{ opacity }} className="text-center mb-20">
-          <motion.p
-            className="text-accent tracking-widest mb-4 uppercase text-sm"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            Step Inside
-          </motion.p>
-          <h2 className="text-5xl md:text-7xl font-playfair font-bold text-luxury mb-6">
-            Luxury Ambience & Interior
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Where contemporary elegance meets timeless sophistication
-          </p>
-        </motion.div>
-
-        {/* === PARALLAX SLIDER === */}
+        {/* ==== GALLERY SECTION (IMPROVED) ==== */}
         <motion.div
           style={{ y, scale }}
-          className="relative max-w-6xl mx-auto mb-20 rounded-3xl overflow-hidden elegant-shadow"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-7xl mx-auto mb-28"
         >
-          <motion.div className="relative h-[600px] group overflow-hidden rounded-3xl">
+          {/* CENTERED HEADING */}
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h3 className="text-4xl md:text-5xl font-bold mb-4 text-luxury">
+              Our Gallery
+            </h3>
 
-            {/* Slider Container */}
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Experience the magic of Maison Gourmet through our gallery! Explore how every detail is designed to make your experience truly unique.
+            </p>
+          </div>
+
+          {/* IMAGE GRID WITH ANIMATION */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.25,
+                },
+              },
+            }}
+          >
+            {/* LEFT IMAGE */}
             <motion.div
-              className="flex h-full"
-              animate={{
-                x: ["0%", "-100%", "-200%", "0%"], // updated for 3 slides
+              variants={{
+                hidden: { opacity: 0, y: 80 },
+                show: { opacity: 1, y: 0 },
               }}
-              transition={{
-                duration: 40, // slower
-                repeat: Infinity,
-                ease: "linear",
-              }}
+              className="w-full h-[350px] md:h-[420px] rounded-3xl overflow-hidden shadow-md"
             >
-              {sliderImages.map((src, index) => (
-                <img
-                  key={index}
-                  src={src}
-                  className="w-full h-[600px] object-cover flex-shrink-0"
-                  alt={`slide-${index}`}
-                />
-              ))}
+              <img
+                src={galleryImages[0]}
+                alt="Gallery Left"
+                className="w-full h-full object-cover"
+              />
             </motion.div>
 
-            {/* Light shimmer */}
+            {/* CENTER BIG IMAGE */}
             <motion.div
-              animate={{ x: ["-100%", "200%"] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: "easeInOut",
+              variants={{
+                hidden: { opacity: 0, scale: 0.9 },
+                show: { opacity: 1, scale: 1 },
               }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              style={{ transform: "skewX(-12deg)" }}
-            />
+              className="w-full h-[420px] md:h-[500px] rounded-3xl overflow-hidden shadow-lg"
+            >
+              <img
+                src={galleryImages[1]}
+                alt="Gallery Center"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
 
-            {/* Gold Glow */}
-            <div className="absolute inset-0 border-4 border-accent/20 group-hover:border-accent/40 rounded-3xl transition-all duration-500 gold-glow" />
-
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-60" />
-          </motion.div>
-
-          {/* Floating Info Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="absolute bottom-8 left-8 right-8 glass-effect rounded-2xl p-6"
-          >
-            <h3 className="text-2xl font-playfair font-bold text-foreground mb-2">
-              Award-Winning Interior Design
-            </h3>
-            <p className="text-muted-foreground">
-              Recognized by Australian Interior Design Awards 2023 for exceptional luxury design
-            </p>
+            {/* RIGHT IMAGE */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 80 },
+                show: { opacity: 1, y: 0 },
+              }}
+              className="w-full h-[350px] md:h-[420px] rounded-3xl overflow-hidden shadow-md"
+            >
+              <img
+                src={galleryImages[2]}
+                alt="Gallery Right"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
           </motion.div>
         </motion.div>
+        {/* ==== GALLERY END ==== */}
 
-        {/* Spaces Grid */}
+        {/* ==== SPACES GRID (unchanged) ==== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {spaces.map((space, index) => (
             <motion.div
@@ -145,21 +145,21 @@ const AmbienceTour = () => {
               initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.5 }}
+              transition={{ duration: 0.5, delay: index * 0.3 }}
               whileHover={{ y: -10 }}
-              className="glass-effect rounded-xl p-6 group cursor-pointer"
+              className="glass-effect rounded-xl p-6 group cursor-pointer backdrop-blur-md bg-white/30"
             >
-              <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mb-4 gold-glow group-hover:scale-110 transition-transform duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent/70 rounded-full flex items-center justify-center mb-4">
                 <span className="text-2xl font-playfair font-bold text-accent-foreground">
                   {index + 1}
                 </span>
               </div>
 
-              <h3 className="text-xl font-playfair font-bold text-foreground mb-3 group-hover:text-luxury transition-colors duration-300">
+              <h3 className="text-xl font-playfair font-bold text-luxury mb-3">
                 {space.title}
               </h3>
 
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {space.description}
               </p>
 

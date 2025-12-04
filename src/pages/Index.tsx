@@ -15,7 +15,7 @@ import { Award, Clock, Users, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import chefPortrait from '@/assets/chef-portrait.jpg';
-import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
+import restaurantAmbience from '@/assets/image.jpg';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
 import heroDish3 from '@/assets/hero-dish-3.jpg';
