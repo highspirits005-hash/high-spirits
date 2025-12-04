@@ -20,32 +20,32 @@ const AmbienceTour = () => {
 
   const galleryImages = [restaurantAmbience, img2, img3];
 
-  const spaces = [
-    {
-      title: "Main Dining Hall",
-      description:
-        "An opulent 120-seat space featuring soaring ceilings, crystal chandeliers, and floor-to-ceiling windows overlooking Melbourne's skyline.",
-      capacity: "120 guests",
-    },
-    {
-      title: "Private Wine Room",
-      description:
-        "Intimate 16-seat glass-enclosed room surrounded by our 500+ bottle collection, perfect for exclusive gatherings.",
-      capacity: "16 guests",
-    },
-    {
-      title: "Chef's Table",
-      description:
-        "An exclusive 8-seat counter offering front-row views of our kitchen brigade at work, with personalized culinary commentary.",
-      capacity: "8 guests",
-    },
-    {
-      title: "Terrace Lounge",
-      description:
-        "Sophisticated outdoor space with lush greenery, ambient lighting, and panoramic city views—ideal for pre-dinner cocktails.",
-      capacity: "40 guests",
-    },
-  ];
+  // const spaces = [
+  //   {
+  //     title: "Main Dining Hall",
+  //     description:
+  //       "An opulent 120-seat space featuring soaring ceilings, crystal chandeliers, and floor-to-ceiling windows overlooking Melbourne's skyline.",
+  //     capacity: "120 guests",
+  //   },
+  //   {
+  //     title: "Private Wine Room",
+  //     description:
+  //       "Intimate 16-seat glass-enclosed room surrounded by our 500+ bottle collection, perfect for exclusive gatherings.",
+  //     capacity: "16 guests",
+  //   },
+  //   {
+  //     title: "Chef's Table",
+  //     description:
+  //       "An exclusive 8-seat counter offering front-row views of our kitchen brigade at work, with personalized culinary commentary.",
+  //     capacity: "8 guests",
+  //   },
+  //   {
+  //     title: "Terrace Lounge",
+  //     description:
+  //       "Sophisticated outdoor space with lush greenery, ambient lighting, and panoramic city views—ideal for pre-dinner cocktails.",
+  //     capacity: "40 guests",
+  //   },
+  // ];
 
   return (
     <section ref={containerRef} className="py-10 relative overflow-hidden bg-[#E7EBDD]">
@@ -138,7 +138,7 @@ const AmbienceTour = () => {
         {/* ==== GALLERY END ==== */}
 
         {/* ==== SPACES GRID (unchanged) ==== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {spaces.map((space, index) => (
             <motion.div
               key={index}
@@ -170,7 +170,7 @@ const AmbienceTour = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </div> */}
 
       </div>
     </section>
