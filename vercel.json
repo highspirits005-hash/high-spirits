@@ -4,9 +4,6 @@
   "installCommand": "npm install",
   "framework": "vite",
   "outputDirectory": "dist",
-  "env": {
-    "VITE_APP_NAME": "@High Spirit Restaurant"
-  },
   "routes": [
     {
       "src": "^/(?!.*\\.).*$",
