@@ -132,7 +132,7 @@ const Menu = () => {
 
             {Object.entries(menuCategories).map(([category, items]) => (
               <TabsContent key={category} value={category} className="space-y-8">
-                {items.map((item: any, index: number) => (
+                {items.map((item: { featured?: boolean; image?: string; name: string }, index: number) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 30 }}

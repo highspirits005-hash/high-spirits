@@ -92,7 +92,7 @@ const Hero = () => {
   animate={{ opacity: 1 }}
   transition={{ delay: 0.9 }}
   className="text-lg md:text-xl text-accent italic font-semibold mb-4"
-  style={{ fontFamily: 'Amsterdam Four' }}
+  style={{ fontFamily: 'Playfair Display, serif' }}
 >
   “Taste the Spirit of Punjab”
 </motion.p>

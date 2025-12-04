@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "outputDirectory": "dist",
+  "env": {
+    "VITE_APP_NAME": "@High Spirit Restaurant"
+  },
+  "routes": [
+    {
+      "src": "^/(?!.*\\.).*$",
+      "dest": "/"
+    }
+  ]
+}

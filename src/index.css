@@ -68,12 +68,7 @@ All colors MUST be HSL.
 
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-  @font-face {
-  font-family: 'Amsterdam Four';
-  src: url('/src/assets/fonts/AmsterdamFour.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+  /* Amsterdam Four font removed - using Playfair Display fallback */
 
 
   .dark {
