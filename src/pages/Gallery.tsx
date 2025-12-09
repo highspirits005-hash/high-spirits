@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 
-import heroDish1 from '@/assets/image.jpg';
+import heroDish1 from '@/assets/Image.jpg';
 import heroDish2 from '@/assets/1.png';
 import heroDish3 from '@/assets/2.png';
 import dalMakhani from '@/assets/HighSpirit.png';
