@@ -17,7 +17,7 @@ const AmbienceTour = () => {
   const y = useTransform(scrollYProgress, [0, 1], [150, -150]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-
+        
   const galleryImages = [restaurantAmbience, img2, img3];
 
   // const spaces = [
