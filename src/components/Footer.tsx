@@ -17,7 +17,7 @@ const Footer = () => {
 </p>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/profile.php?id=61584455564451"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-accent/20 hover:bg-accent flex items-center justify-center transition-all duration-300 hover:scale-110"
@@ -25,7 +25,7 @@ const Footer = () => {
                 <Facebook className="w-5 h-5 text-accent hover:text-accent-foreground" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/highspirits5/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-accent/20 hover:bg-accent flex items-center justify-center transition-all duration-300 hover:scale-110"
