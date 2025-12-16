@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import MapBox from '@/components/MapBox';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,20 +24,18 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      details: ['0451382958', 'Mon-Sun: 9AM - 11PM'],
+      details: ['0451382958'],
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['info@highspirit.com.au', 'events@highspirit.com.au'],
+      details: ['highspirits005@gmail.com'],
     },
     {
       icon: Clock,
       title: 'Opening Hours',
       details: [
-        'Mon-Thu: 5:30PM - 11PM',
-        'Fri-Sat: 5:30PM - 12AM',
-        'Sunday: 5:30PM - 10:30PM',
+        '5:00 PM - 9:00 PM (Mon-Sun)'
       ],
     },
   ];
@@ -92,7 +91,7 @@ const Contact = () => {
                   Visit Us Today
                 </h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  Whether you have questions about our menu, want to book a private event, or simply wish to share feedback, we'd love to hear from you.
+                  Whether you have questions about our menu, want to Walk inprivate event, or simply wish to share feedback, we'd love to hear from you.
                 </p>
               </div>
 
@@ -229,16 +228,8 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
             className="max-w-5xl mx-auto rounded-lg overflow-hidden elegant-shadow"
           >
-            <div className="aspect-video bg-secondary/30 flex items-center justify-center">
-              <div className="text-center p-8">
-                <MapPin className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <p className="text-xl font-playfair text-foreground mb-2">
-                  1/57 Victoria Street, Bunbury 6230
-                </p>
-                <p className="text-muted-foreground">
-                  Google Maps integration placeholder
-                </p>
-              </div>
+            <div className="w-full h-[450px]">
+              <MapBox />
             </div>
           </motion.div>
         </div>

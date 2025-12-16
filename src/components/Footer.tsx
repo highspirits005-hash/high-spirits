@@ -97,7 +97,7 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-accent flex-shrink-0" />
                 <span className="text-muted-foreground">
-                 highspirit@gmail.com
+                 highspirits007@gmail.com
                 </span>
               </li>
 
@@ -110,18 +110,7 @@ const Footer = () => {
               Opening Hours
             </h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li className="flex justify-between">
-                <span>Monday - Thursday</span>
-                <span className="text-accent font-medium">5:30PM - 11:00PM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Friday - Saturday</span>
-                <span className="text-accent font-medium">5:30PM - 12:00AM</span>
-              </li>
-              <li className="flex justify-between">
-                <span>Sunday</span>
-                <span className="text-accent font-medium">5:30PM - 10:30PM</span>
-              </li>
+              5:00 PM - 9:00 PM (Mon-Sun)
             </ul>
           </div>
         </div>

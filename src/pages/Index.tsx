@@ -11,7 +11,7 @@ import MenuStory from '@/components/MenuStory';
 import Carousel3D from '@/components/Carousel3D';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Award, Clock, Users, Star } from 'lucide-react';
+import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import chefPortrait from '@/assets/chef-portrait.jpg';
@@ -32,10 +32,10 @@ const Index = () => {
   const isAmbienceInView = useInView(ambienceRef, { once: true });
 
   const stats = [
-    { icon: Award, value: '15+', label: 'Awards Won' },
-    { icon: Clock, value: '20+', label: 'Years Experience' },
-    { icon: Users, value: '50K+', label: 'Happy Guests' },
-    { icon: Star, value: '5.0', label: 'Rating' },
+    { icon: ChefHat, value: '100%', label: 'Authentic Punjabi Recipes' },
+    { icon: CalendarDays, value: '7 Days', label: 'Freshly Served' },
+    { icon: ShieldCheck, value: 'Zero', label: 'Compromise' },
+    { icon: Star, value: '5.0', label: 'Google Rating' },
   ];
 
   const carouselItems = [
@@ -77,22 +77,28 @@ const Index = () => {
       <Hero />
 
       {/* Stats Section */}
-      <section ref={statsRef} className="py-20 luxury-gradient">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <section ref={statsRef} className="py-24 luxury-gradient relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={isStatsInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center glass-effect rounded-lg p-6 hover:scale-105 transition-transform duration-300"
+                initial={{ opacity: 0, y: 40 }}
+                animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
+                className="group relative"
               >
-                <stat.icon className="w-12 h-12 mx-auto mb-4 text-accent" />
-                <h3 className="text-4xl font-playfair font-bold text-accent mb-2">
-                  {stat.value}
-                </h3>
-                <p className="text-muted-foreground font-inter">{stat.label}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative text-center glass-effect rounded-2xl p-8 border border-accent/10 hover:border-accent/30 transition-all duration-500 hover:-translate-y-2">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-accent/20 to-accent/5 mb-5 group-hover:scale-110 transition-transform duration-300">
+                    <stat.icon className="w-8 h-8 text-accent" />
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-playfair font-bold bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent mb-3">
+                    {stat.value}
+                  </h3>
+                  <p className="text-muted-foreground font-inter text-sm md:text-base tracking-wide">{stat.label}</p>
+                </div>
               </motion.div>
             ))}
           </div>
