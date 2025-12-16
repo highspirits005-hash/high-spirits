@@ -1,11 +1,44 @@
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Star } from 'lucide-react';
 import VideoBackground from './VideoBackground';
+import { Marquee } from './ui/marquee';
+import { cn } from '@/lib/utils';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
 import heroDish3 from '@/assets/hero-dish-3.jpg';
+
+const taglines = [
+  "Buffet Starts at 5:30 P.M.",
+  "Join Us for a High-Spirited Evening",
+  "Punjabi Roots. Premium Plates.",
+  "High on Taste. High on Spirit.",
+  "Food that Carries Chadti Kala",
+  "Butter Chicken Knows Your Weakness",
+  "Chadti Kala Starts After First Drink",
+  "Sip First. Decisions Later.",
+  "Table for Two? We Order for Four.",
+  "Calories Don't Count Here",
+];
+
+const TaglineCard = ({ text }: { text: string }) => {
+  return (
+    <div
+      className={cn(
+        "flex items-center p-8 mx-2",
+        "rounded-full border border-accent/30 bg-background/30 backdrop-blur-sm",
+        "hover:bg-accent/10 hover:border-accent/50 transition-all duration-300"
+      )}
+    >
+      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0" />
+      <span className="text-xl md:text-base font-medium text-foreground whitespace-nowrap">
+        {text}
+      </span>
+      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0" />
+    </div>
+  );
+};
 
 const Hero = () => {
   return (
@@ -123,7 +156,7 @@ const Hero = () => {
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
             >
-              Book a Table
+             Walk in 
             </Button>
           </Link>
           <Link to="/menu">
@@ -135,6 +168,24 @@ const Hero = () => {
               Explore Menu
             </Button>
           </Link>
+        </motion.div>
+
+        {/* Reviews Marquee */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="mt-12 w-screen relative left-1/2 -translate-x-1/2"
+        >
+          <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+            <Marquee pauseOnHover className="[--duration:40s]">
+              {taglines.map((tagline, index) => (
+                <TaglineCard key={index} text={tagline} />
+              ))}
+            </Marquee>
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background to-transparent" />
+          </div>
         </motion.div>
       </div>
 

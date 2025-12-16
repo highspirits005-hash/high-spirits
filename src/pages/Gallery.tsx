@@ -21,8 +21,10 @@ const Gallery = () => {
     { src: heroDish3 },
     { src: dalMakhani },
     { src: palakPaneer },
- 
-   
+    { src: 'https://highspirts-new.vercel.app/8.jpg' },
+    { src: 'https://highspirts-new.vercel.app/9.jpg' },
+    { src: 'https://highspirts-new.vercel.app/assets/cocktail-signature-S5XTVbi_.jpg' },
+    { src: 'https://highspirts-new.vercel.app/assets/wine-pairing-cjecvPaa.jpg' },
   ];
 
   return (

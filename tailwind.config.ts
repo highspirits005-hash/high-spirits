@@ -117,6 +117,14 @@ export default {
           "0%, 100%": { filter: "brightness(1) drop-shadow(0 0 10px rgba(203, 161, 53, 0.3))" },
           "50%": { filter: "brightness(1.2) drop-shadow(0 0 25px rgba(203, 161, 53, 0.6))" },
         },
+        "marquee": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-vertical": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -131,6 +139,8 @@ export default {
         "shimmer": "shimmer 3s ease-in-out infinite",
         "float-slow": "float-slow 6s ease-in-out infinite",
         "glow": "glow 2.5s ease-in-out infinite",
+        "marquee": "marquee var(--duration) linear infinite",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
     },
   },

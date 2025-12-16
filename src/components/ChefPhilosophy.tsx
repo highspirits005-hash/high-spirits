@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import chefPortrait from '@/assets/chef-portrait.jpg';
+import chefPortrait from '/chef.png';
 
 const ChefPhilosophy = () => {
   const containerRef = useRef(null);
