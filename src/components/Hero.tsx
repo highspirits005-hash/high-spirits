@@ -16,7 +16,7 @@ const taglines = [
   "High on Taste. High on Spirit.",
   "Food that Carries Chardi Kala",
   "Butter Chicken Knows Your Weakness",
-  "Chadti Kala Starts After First Drink",
+  "Chardii Kala Starts After First Drink",
   "Sip First. Decisions Later.",
   "Table for Two? We Order for Four.",
   "Calories Don't Count Here",
