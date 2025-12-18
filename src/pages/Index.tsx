@@ -94,7 +94,7 @@ const Index = () => {
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-accent/20 to-accent/5 mb-5 group-hover:scale-110 transition-transform duration-300">
                     <stat.icon className="w-8 h-8 text-accent" />
                   </div>
-                  <h3 className="text-4xl md:text-5xl font-playfair font-bold bg-gradient-to-r from-accent via-amber-400 to-accent bg-clip-text text-transparent mb-3">
+                  <h3 className="text-4xl md:text-5xl font-playfair font-bold mb-3 text-accent">
                     {stat.value}
                   </h3>
                   <p className="text-muted-foreground font-inter text-sm md:text-base tracking-wide">{stat.label}</p>
