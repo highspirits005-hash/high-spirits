@@ -201,7 +201,7 @@ const Reservations = () => {
                 </Button>
 
                 <p className="text-sm text-muted-foreground text-center">
-                  Reservations are subject to availability. We'll confirm your booking via email within 24 hours.
+                 “Reservations are subject to availability. We’ll be in touch via email shortly to confirm your booking.”
                 </p>
               </form>
             </motion.div>

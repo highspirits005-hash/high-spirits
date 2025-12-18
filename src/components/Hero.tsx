@@ -14,7 +14,7 @@ const taglines = [
   "Join Us for a High-Spirited Evening",
   "Punjabi Roots. Premium Plates.",
   "High on Taste. High on Spirit.",
-  "Food that Carries Chadti Kala",
+  "Food that Carries Chardi Kala",
   "Butter Chicken Knows Your Weakness",
   "Chadti Kala Starts After First Drink",
   "Sip First. Decisions Later.",
@@ -151,7 +151,7 @@ const Hero = () => {
           transition={{ delay: 1.2 }}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
-          <Link to="/reservations">
+          <Link to="/walk-in">
             <Button
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"

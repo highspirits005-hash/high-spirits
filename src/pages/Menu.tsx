@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MenuItemSkeleton } from '@/components/skeletons/MenuItemSkeleton';
+import ShareButtons from '@/components/ShareButtons';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
 import heroDish3 from '@/assets/hero-dish-3.jpg';
@@ -301,7 +302,7 @@ const Menu = () => {
                         <p className="text-4xl md:text-5xl font-playfair font-bold text-accent">
                           $35 <span className="text-xl">Per Person</span>
                         </p>
-                        <p className="text-sm text-muted-foreground mt-3">Available daily from 5:00 PM</p>
+                        <p className="text-sm text-muted-foreground mt-3">Available daily from 5:30 PM</p>
                       </div>
                     </div>
                   </motion.div>
@@ -346,6 +347,14 @@ const Menu = () => {
                           <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3">
                             {item.description}
                           </p>
+                          {/* Share Buttons */}
+                          <ShareButtons 
+                            title={item.name}
+                            description={item.description || ''}
+                            hashtags={['HighSpirits', 'IndianCuisine', 'FineFood', 'MusTry']}
+                            showLabel={true}
+                            size="sm"
+                          />
                         </div>
                       </div>
                     </motion.div>
