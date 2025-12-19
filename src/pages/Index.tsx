@@ -5,23 +5,26 @@ import Footer from '@/components/Footer';
 import SignatureExperiences from '@/components/SignatureExperiences';
 import TimelineSection from '@/components/TimelineSection';
 import IngredientsShowcase from '@/components/IngredientsShowcase';
-import AmbienceTour from '@/components/AmbienceTour';
 import ChefPhilosophy from '@/components/ChefPhilosophy';
 import MenuStory from '@/components/MenuStory';
 import Carousel3D from '@/components/Carousel3D';
+import GuestReviews from '@/components/GuestReviews';
+import Newsletter from '@/components/Newsletter';
+import GalleryPreview from '@/components/GalleryPreview';
+import WhyChooseUs from '@/components/WhyChooseUs';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import chefPortrait from '@/assets/chef-portrait.jpg';
 import restaurantAmbience from '@/assets/Image.jpg';
-import heroDish1 from '@/assets/hero-dish-1.jpg';
-import heroDish2 from '@/assets/hero-dish-2.jpg';
-import heroDish3 from '@/assets/hero-dish-3.jpg';
-import dalMakhani from '@/assets/dish-dal-makhani.jpg';
-import palakPaneer from '@/assets/dish-palak-paneer.jpg';
-import roganJosh from '@/assets/dish-rogan-josh.jpg';
+
+interface CarouselItem {
+  image: string;
+  title: string;
+  description: string;
+}
 
 const Index = () => {
   const statsRef = useRef(null);
@@ -30,45 +33,47 @@ const Index = () => {
   const isStatsInView = useInView(statsRef, { once: true });
   const isChefInView = useInView(chefRef, { once: true });
   const isAmbienceInView = useInView(ambienceRef, { once: true });
+  
+  const [carouselItems, setCarouselItems] = useState<CarouselItem[]>([]);
+  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
+
+  useEffect(() => {
+    const fetchCarouselItems = async () => {
+      try {
+        setIsLoadingCarousel(true);
+        const response = await fetch(
+          'https://calm-actor-864a39d720.strapiapp.com/api/signature-creations?populate=*'
+        );
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch signature creations');
+        }
+        
+        const data = await response.json();
+        // Sort by displayOrder and transform to carousel format
+        const sortedItems = (data.data || [])
+          .sort((a: any, b: any) => a.displayOrder - b.displayOrder)
+          .map((item: any) => ({
+            image: item.image.url,
+            title: item.title,
+            description: item.shortDescription
+          }));
+        setCarouselItems(sortedItems);
+      } catch (err) {
+        console.error('Error fetching carousel items:', err);
+      } finally {
+        setIsLoadingCarousel(false);
+      }
+    };
+
+    fetchCarouselItems();
+  }, []);
 
   const stats = [
     { icon: ChefHat, value: '100%', label: 'Authentic Punjabi Recipes' },
     { icon: CalendarDays, value: '7 Days', label: 'Freshly Served' },
     { icon: ShieldCheck, value: 'Zero', label: 'Compromise' },
     { icon: Star, value: '5.0', label: 'Google Rating' },
-  ];
-
-  const carouselItems = [
-    {
-      image: heroDish1,
-      title: "Signature Butter Chicken",
-      description: "Our most celebrated dish—succulent chicken in a velvety tomato and butter sauce, perfected over two decades"
-    },
-    {
-      image: heroDish2,
-      title: "Tandoori Mixed Grill",
-      description: "A premium selection of tandoor-roasted meats, marinated in aromatic spices and Australian native herbs"
-    },
-    {
-      image: heroDish3,
-      title: "Biryani Royale",
-      description: "Fragrant basmati rice layered with tender lamb, saffron, and 23 secret spices—a royal feast"
-    },
-    {
-      image: dalMakhani,
-      title: "Truffle Dal Makhani",
-      description: "18-hour slow-cooked black lentils finished with cream and Australian black truffle"
-    },
-    {
-      image: palakPaneer,
-      title: "Palak Paneer Supreme",
-      description: "Silky spinach sauce with house-made paneer, enhanced with organic Victorian produce"
-    },
-    {
-      image: roganJosh,
-      title: "Tasmanian Lamb Rogan Josh",
-      description: "Premium Tasmanian lamb in aromatic Kashmiri gravy—where Australian meets authentic"
-    }
   ];
 
   return (
@@ -142,7 +147,13 @@ const Index = () => {
             </p>
           </motion.div>
           
-          <Carousel3D items={carouselItems} />
+          {isLoadingCarousel ? (
+            <div className="text-center py-20">
+              <p className="text-muted-foreground">Loading signature creations...</p>
+            </div>
+          ) : (
+            <Carousel3D items={carouselItems} />
+          )}
         </div>
       </section>
       
@@ -259,67 +270,17 @@ const Index = () => {
       {/* Ingredients Showcase */}
       <IngredientsShowcase />
       
-      {/* Ambience Tour */}
-      <AmbienceTour />
+      {/* Gallery Preview */}
+      <GalleryPreview />
 
-      {/* Testimonials Preview */}
-      <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <p className="text-accent font-inter tracking-widest mb-3 uppercase text-sm">
-              Guest Reviews
-            </p>
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-luxury mb-4">
-              What Our Guests Say
-            </h2>
-          </motion.div>
+      {/* Why Choose Us */}
+      <WhyChooseUs />
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Emma Thompson',
-                review: 'Absolutely exquisite! The butter chicken was perfection, and the ambience transported us to luxury.',
-                rating: 5,
-              },
-              {
-                name: 'James Wilson',
-                review: 'Best Indian restaurant in Australia. The attention to detail in every dish is remarkable.',
-                rating: 5,
-              },
-              {
-                name: 'Sophia Martinez',
-                review: 'A true fine dining experience. From the moment we walked in, we felt like royalty.',
-                rating: 5,
-              },
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="glass-effect rounded-lg p-8 hover:scale-105 transition-transform duration-300"
-              >
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground italic mb-6 leading-relaxed">
-                  "{testimonial.review}"
-                </p>
-                <p className="text-accent font-semibold">{testimonial.name}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Guest Reviews Carousel */}
+      <GuestReviews />
+
+      {/* Newsletter Section */}
+      <Newsletter />
 
       <Footer />
     </div>

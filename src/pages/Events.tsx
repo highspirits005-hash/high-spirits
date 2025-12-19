@@ -2,48 +2,58 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, Sparkles, Music, Utensils, PartyPopper } from 'lucide-react';
+import { Calendar, Users, Sparkles, Music, Utensils, PartyPopper, Heart } from 'lucide-react';
 import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
+import { useState, useEffect } from 'react';
+
+interface EventService {
+  id: number;
+  title: string;
+  shortDescription: string;
+  capacityNote: string;
+  icon: string;
+  displayOrder: number;
+}
+
+const iconMap: { [key: string]: any } = {
+  'party': PartyPopper,
+  'corporate': Users,
+  'wedding': Sparkles,
+  'catering': Utensils,
+  'music': Music,
+  'venue': Calendar,
+  'heart': Heart,
+};
 
 const Events = () => {
-  const eventTypes = [
-    {
-      icon: PartyPopper,
-      title: 'Private Celebrations',
-      description: 'Birthday parties, anniversaries, and milestone celebrations',
-      capacity: 'Up to 80 guests',
-    },
-    {
-      icon: Users,
-      title: 'Corporate Events',
-      description: 'Business dinners, team building, and corporate gatherings',
-      capacity: 'Up to 100 guests',
-    },
-    {
-      icon: Sparkles,
-      title: 'Weddings & Receptions',
-      description: 'Elegant wedding receptions and engagement celebrations',
-      capacity: 'Up to 120 guests',
-    },
-    {
-      icon: Utensils,
-      title: 'Catering Services',
-      description: 'Off-site catering for your special occasions',
-      capacity: 'Any size',
-    },
-    {
-      icon: Music,
-      title: 'Wedding Catering',
-      description: 'Exquisite menus for your perfect day with full service',
-      capacity: 'Up to 300 guests',
-    },
-    {
-      icon: Calendar,
-      title: 'Private Venues',
-      description: 'Exclusive venue hire for intimate or grand events',
-      capacity: 'Full venue available',
-    },
-  ];
+  const [eventTypes, setEventTypes] = useState<EventService[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEventServices = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          'https://calm-actor-864a39d720.strapiapp.com/api/event-services'
+        );
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch event services');
+        }
+        
+        const data = await response.json();
+        // Sort by displayOrder
+        const sortedEvents = (data.data || []).sort((a: EventService, b: EventService) => a.displayOrder - b.displayOrder);
+        setEventTypes(sortedEvents);
+      } catch (err) {
+        console.error('Error fetching event services:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEventServices();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -114,30 +124,39 @@ const Events = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {eventTypes.map((event, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="glass-effect rounded-lg p-8 hover:scale-105 transition-transform duration-300"
-              >
-                <div className="w-16 h-16 mb-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <event.icon className="w-8 h-8 text-accent" />
-                </div>
-                <h3 className="text-2xl font-playfair font-bold text-foreground mb-3">
-                  {event.title}
-                </h3>
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {event.description}
-                </p>
-                <p className="text-accent font-semibold flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  {event.capacity}
-                </p>
-              </motion.div>
-            ))}
+            {isLoading ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground">Loading event services...</p>
+              </div>
+            ) : (
+              eventTypes.map((event, index) => {
+                const IconComponent = iconMap[event.icon] || PartyPopper;
+                return (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="glass-effect rounded-lg p-8 hover:scale-105 transition-transform duration-300"
+                  >
+                    <div className="w-16 h-16 mb-6 rounded-full bg-accent/20 flex items-center justify-center">
+                      <IconComponent className="w-8 h-8 text-accent" />
+                    </div>
+                    <h3 className="text-2xl font-playfair font-bold text-foreground mb-3">
+                      {event.title}
+                    </h3>
+                    <p className="text-muted-foreground mb-4 leading-relaxed">
+                      {event.shortDescription}
+                    </p>
+                    <p className="text-accent font-semibold flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      {event.capacityNote}
+                    </p>
+                  </motion.div>
+                );
+              })
+            )}
           </div>
         </div>
       </section>

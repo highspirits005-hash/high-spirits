@@ -8,11 +8,82 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 const Contact = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll respond within 24 hours.");
+    
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      
+      // Prepare API payload - Strapi v4 format
+      const payload = {
+        data: {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || '',
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+        }
+      };
+
+      const response = await fetch(
+        'https://calm-actor-864a39d720.strapiapp.com/api/contact-forms',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API Error Response:', errorData);
+        throw new Error(errorData?.message || 'Failed to send message');
+      }
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+      });
+      
+      toast.success("Message sent! We'll respond within 24 hours.");
+    } catch (err) {
+      console.error('Error submitting contact form:', err);
+      toast.error(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -140,6 +211,8 @@ const Contact = () => {
                     <Input
                       id="name"
                       required
+                      value={formData.name}
+                      onChange={handleInputChange}
                       className="bg-secondary/50 border-accent/20 focus:border-accent"
                     />
                   </div>
@@ -152,6 +225,8 @@ const Contact = () => {
                       id="email"
                       type="email"
                       required
+                      value={formData.email}
+                      onChange={handleInputChange}
                       className="bg-secondary/50 border-accent/20 focus:border-accent"
                     />
                   </div>
@@ -163,6 +238,8 @@ const Contact = () => {
                     <Input
                       id="phone"
                       type="tel"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                       className="bg-secondary/50 border-accent/20 focus:border-accent"
                     />
                   </div>
@@ -174,6 +251,8 @@ const Contact = () => {
                     <Input
                       id="subject"
                       required
+                      value={formData.subject}
+                      onChange={handleInputChange}
                       className="bg-secondary/50 border-accent/20 focus:border-accent"
                     />
                   </div>
@@ -185,6 +264,8 @@ const Contact = () => {
                     <Textarea
                       id="message"
                       required
+                      value={formData.message}
+                      onChange={handleInputChange}
                       className="bg-secondary/50 border-accent/20 focus:border-accent min-h-[150px]"
                     />
                   </div>
@@ -192,9 +273,10 @@ const Contact = () => {
                   <Button
                     type="submit"
                     size="lg"
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold gold-glow"
+                    disabled={isSubmitting}
+                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold gold-glow disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
               </div>
