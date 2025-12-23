@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Gallery = () => {
   const [images, setImages] = useState<any[]>([]);
@@ -9,13 +10,15 @@ const Gallery = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const imagesPerPage = 12; // 4x3 grid, adjust as needed
 
   useEffect(() => {
     const fetchGalleryImages = async () => {
       try {
         setIsLoading(true);
         const response = await fetch(
-          'https://calm-actor-864a39d720.strapiapp.com/api/gallery-items?populate=*'
+          'https://calm-actor-864a39d720.strapiapp.com/api/gallery-items?populate=*&pagination[pageSize]=100'
         );
         
         if (!response.ok) {
@@ -58,6 +61,18 @@ const Gallery = () => {
   const filteredImages = selectedCategory
     ? images.filter(img => img.category === selectedCategory)
     : images;
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredImages.length / imagesPerPage);
+  const startIndex = (currentPage - 1) * imagesPerPage;
+  const endIndex = startIndex + imagesPerPage;
+  const paginatedImages = filteredImages.slice(startIndex, endIndex);
+
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (category: string | null) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="min-h-screen">
@@ -107,7 +122,7 @@ const Gallery = () => {
           {categories.length > 0 && (
             <div className="flex flex-wrap justify-center gap-3 mb-12">
               <motion.button
-                onClick={() => setSelectedCategory(null)}
+                onClick={() => handleCategoryChange(null)}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -122,7 +137,7 @@ const Gallery = () => {
               {categories.map((category, idx) => (
                 <motion.button
                   key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => handleCategoryChange(category)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: (idx + 1) * 0.1 }}
@@ -150,7 +165,7 @@ const Gallery = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                {filteredImages.map((image, index) => (
+                {paginatedImages.map((image, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -173,6 +188,64 @@ const Gallery = () => {
                 ))}
 
               </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="flex items-center justify-center gap-6 mt-12"
+                >
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="p-3 rounded-full border-2 border-accent text-accent hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-10 h-10 rounded-full font-semibold transition-all duration-300 ${
+                          currentPage === page
+                            ? 'bg-accent text-accent-foreground gold-glow'
+                            : 'border-2 border-accent text-accent hover:bg-accent/10'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="p-3 rounded-full border-2 border-accent text-accent hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+                    aria-label="Next page"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </motion.div>
+              )}
+
+              {/* Image count info */}
+              {totalPages > 1 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="text-center mt-8"
+                >
+                  <p className="text-muted-foreground">
+                    Showing {startIndex + 1} - {Math.min(endIndex, filteredImages.length)} of {filteredImages.length} images
+                  </p>
+                </motion.div>
+              )}
             </>
           )}
 
