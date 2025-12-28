@@ -169,9 +169,6 @@ const Menu = () => {
                               </span>
                             )}
                           </div>
-                          <span className="text-2xl font-bold text-accent ml-4">
-                            ${item.price}
-                          </span>
                         </div>
                         <p className="text-muted-foreground leading-relaxed">
                           {item.description}
