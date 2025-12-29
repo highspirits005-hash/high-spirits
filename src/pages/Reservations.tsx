@@ -35,7 +35,6 @@ const Reservations = () => {
             transition={{ duration: 0.6 }}
             className="text-accent font-inter tracking-widest mb-4 uppercase text-sm"
           >
-            Reserve Your Table
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -51,7 +50,7 @@ const Reservations = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-foreground max-w-2xl mx-auto"
           >
-            Secure your spot for an unforgettable dining experience
+            Where great food meets seamless hospitality
           </motion.p>
         </div>
       </section>
@@ -201,7 +200,7 @@ const Reservations = () => {
                 </Button>
 
                 <p className="text-sm text-muted-foreground text-center">
-                  Reservations are subject to availability. We'll confirm your booking via email within 24 hours.
+                 Walk-in requests are subject to availability. Our team will confirm shortly via email.
                 </p>
               </form>
             </motion.div>

@@ -65,7 +65,7 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
-            <Link to="/reservations">
+            <Link to="/walk-in">
               <Button
                 variant="default"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-6 gold-glow"
@@ -105,7 +105,7 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/reservations" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link to="/walk-in" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
                   Walk in
                 </Button>

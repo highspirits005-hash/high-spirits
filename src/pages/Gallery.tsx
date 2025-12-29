@@ -111,7 +111,7 @@ const Gallery = () => {
 
             <button
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-8 py-4 rounded-md gold-glow transition-all duration-300"
-              onClick={() => window.location.href = '/reservations'}
+              onClick={() => window.location.href = '/walk-in'}
             >
               Make a Reservation
             </button>

@@ -194,7 +194,7 @@ const Menu = () => {
             <Button
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold gold-glow"
-              onClick={() => window.location.href = '/reservations'}
+              onClick={() => window.location.href = '/walk-in'}
             >
               Book Your Table
             </Button>
