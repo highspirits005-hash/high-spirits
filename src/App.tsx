@@ -7,7 +7,6 @@ import ScrollToTop from "./components/ScrollToTop";
 
 import Index from "./pages/Index";
 import About from "./pages/About";
-import OurStory from "./pages/OurStory";
 import Menu from "./pages/Menu";
 import Gallery from "./pages/Gallery";
 import Reservations from "./pages/Reservations";
@@ -32,7 +31,6 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
-          <Route path="/our-story" element={<OurStory />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/walk-in" element={<Reservations />} />
