@@ -86,13 +86,13 @@ const OurStory = () => {
                 From Punjab to Australia
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                Our founder, Chef Ishpreet Bedi, grew up in the heart of Punjab, where food is not just sustenance but a celebration of life. Watching his grandmother cook traditional recipes in the family kitchen, he learned that the secret to great food lies in passion, patience, and the finest ingredients.
+                Our business partner, Ishpreet Bedi, grew up in the heart of Punjab, where hospitality is a way of life. From an early age, she learned that successful businesses are built on care, consistency, and attention to detail—values she brings into every aspect of operations and guest experience.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                After training in India's most prestigious culinary institutes and working in Michelin-starred kitchens across Europe, Chef Ishpreet Bedi arrived in Australia with a dream: to create a restaurant that would honor his heritage while embracing the sophistication of fine dining.
+               With a refined vision shaped by hospitality experience across India and Australia, Ishpreet Bedi leads the brand with a focus on operational excellence, cultural authenticity, and elevated guest experiences.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                In 2003, High Spirit opened its doors in Sydney, bringing together authentic Punjabi flavors, North Indian classics, and contemporary culinary techniques in an atmosphere of unparalleled luxury.
+               
               </p>
             </motion.div>
 

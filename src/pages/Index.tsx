@@ -179,16 +179,16 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <p className="text-accent font-inter tracking-widest mb-3 uppercase text-sm">
-                Culinary Mastery
+                
               </p>
               <h2 className="text-4xl md:text-5xl font-playfair font-bold text-luxury mb-6">
-                Meet Our Executive Chef
+                Meet Our Business Partner
               </h2>
               <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-                Chef Ishpreet Bedi brings over 20 years of culinary expertise, having trained in the finest kitchens of India and Australia. His passion for authentic flavors combined with modern techniques creates an unforgettable dining experience.
+               Ishpreet Bedi brings over 20 years of experience in hospitality operations across India and Australia. As a business partner, she leads daily operations and strategic planning, ensuring seamless management and a consistently exceptional guest experience.
               </p>
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-                Each dish is a masterpiece, crafted with heritage recipes passed down through generations and elevated with contemporary presentation.
+                Her strong leadership and attention to detail ensure the brand runs efficiently while maintaining the highest standards of service and quality.
               </p>
               <Link to="/our-story">
                 <Button

@@ -41,11 +41,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="text-3xl font-playfair font-bold text-luxury tracking-wider"
-            >
-              HIGH SPIRITS
+            <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-2">
+              <img src="/logo1.png" alt="High Spirits logo" className="h-8 md:h-12 w-auto" />
+              <span className="hidden lg:inline-block text-2xl font-playfair font-bold text-luxury tracking-wider">HIGH SPIRITS</span>
             </motion.div>
           </Link>
 
