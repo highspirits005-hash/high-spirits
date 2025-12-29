@@ -14,7 +14,7 @@ import { useRef } from 'react';
 import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import chefPortrait from '@/assets/chef-portrait.jpg';
+import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
 import restaurantAmbience from '@/assets/Image.jpg';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
@@ -165,7 +165,7 @@ const Index = () => {
               <div className="relative overflow-hidden rounded-lg elegant-shadow">
                 <img
                   src={chefPortrait}
-                  alt="Executive Chef"
+                  alt="Executive Chef Ishpreet Bedi"
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
@@ -185,7 +185,7 @@ const Index = () => {
                 Meet Our Executive Chef
               </h2>
               <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-                Chef Vikram Singh brings over 20 years of culinary expertise, having trained in the finest kitchens of India and Australia. His passion for authentic flavors combined with modern techniques creates an unforgettable dining experience.
+                Chef Ishpreet Bedi brings over 20 years of culinary expertise, having trained in the finest kitchens of India and Australia. His passion for authentic flavors combined with modern techniques creates an unforgettable dining experience.
               </p>
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
                 Each dish is a masterpiece, crafted with heritage recipes passed down through generations and elevated with contemporary presentation.

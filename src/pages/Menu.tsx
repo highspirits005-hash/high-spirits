@@ -52,7 +52,7 @@ const Menu = () => {
       },
       { 
         name: '10-Course Chef\'s Table', 
-        description: 'An exclusive experience at our Chef\'s Table with personalized menu, kitchen tour, and interaction with Chef Rajveer Singh. Features rare ingredients and innovative preparations not available on the regular menu.',
+        description: 'An exclusive experience at our Chef\'s Table with personalized menu, kitchen tour, and interaction with Chef Amardeep Singh. Features rare ingredients and innovative preparations not available on the regular menu.',
         price: 185,
         featured: true
       },
@@ -132,7 +132,7 @@ const Menu = () => {
 
             {Object.entries(menuCategories).map(([category, items]) => (
               <TabsContent key={category} value={category} className="space-y-8">
-                {items.map((item: { featured?: boolean; image?: string; name: string }, index: number) => (
+                {items.map((item: { featured?: boolean; image?: string; name: string; description?: string; price?: number; type?: string }, index: number) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 30 }}

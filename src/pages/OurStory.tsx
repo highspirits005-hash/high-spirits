@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Trophy, Users } from 'lucide-react';
-import chefPortrait from '@/assets/chef-portrait.jpg';
+import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
 
 const OurStory = () => {
   const timeline = [
@@ -86,10 +86,10 @@ const OurStory = () => {
                 From Punjab to Australia
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                Our founder, Chef Vikram Singh, grew up in the heart of Punjab, where food is not just sustenance but a celebration of life. Watching his grandmother cook traditional recipes in the family kitchen, he learned that the secret to great food lies in passion, patience, and the finest ingredients.
+                Our founder, Chef Ishpreet Bedi, grew up in the heart of Punjab, where food is not just sustenance but a celebration of life. Watching his grandmother cook traditional recipes in the family kitchen, he learned that the secret to great food lies in passion, patience, and the finest ingredients.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-                After training in India's most prestigious culinary institutes and working in Michelin-starred kitchens across Europe, Chef Singh arrived in Australia with a dream: to create a restaurant that would honor his heritage while embracing the sophistication of fine dining.
+                After training in India's most prestigious culinary institutes and working in Michelin-starred kitchens across Europe, Chef Ishpreet Bedi arrived in Australia with a dream: to create a restaurant that would honor his heritage while embracing the sophistication of fine dining.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 In 2003, High Spirit opened its doors in Sydney, bringing together authentic Punjabi flavors, North Indian classics, and contemporary culinary techniques in an atmosphere of unparalleled luxury.
@@ -106,7 +106,7 @@ const OurStory = () => {
               <div className="relative overflow-hidden rounded-lg elegant-shadow">
                 <img
                   src={chefPortrait}
-                  alt="Chef Vikram Singh"
+                  alt="Chef Ishpreet Bedi"
                   className="w-full h-auto object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />

@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import chefPortrait from '/chef.png';
+import chefPortrait from '/Amardeep Singh.jpg';
 
 const ChefPhilosophy = () => {
   const containerRef = useRef(null);
@@ -37,7 +37,7 @@ const ChefPhilosophy = () => {
               <div className="relative rounded-3xl overflow-hidden elegant-shadow group">
                 <motion.img
                   src={chefPortrait}
-                  alt="Executive Chef Rajveer Singh"
+                  alt="Executive Chef Amardeep Singh"
                   className="w-full h-[700px] object-cover"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.8 }}
@@ -101,9 +101,9 @@ const ChefPhilosophy = () => {
               </p>
 
               <p className="text-lg text-foreground/90 leading-relaxed">
-                <span className="text-accent font-semibold">Chef Rajveer Singh</span>, our Executive Chef, brings over 20 years 
+                <span className="text-accent font-semibold">Chef Amardeep Singh</span>, our Executive Chef, brings over 20 years 
                 of culinary mastery to High Spirit. Trained in the royal kitchens of Jaipur and refined through experience 
-                at Michelin-starred restaurants across Europe, Chef Rajveer's approach is a harmonious blend of respect 
+                at Michelin-starred restaurants across Europe, Chef Amardeep's approach is a harmonious blend of respect 
                 for heritage and fearless innovation.
               </p>
 
@@ -114,7 +114,7 @@ const ChefPhilosophy = () => {
               </p>
 
               <p className="text-lg text-foreground/90 leading-relaxed">
-                At High Spirit, we don't just serve food. We craft experiences that linger in memory, spark conversation, 
+                At High Spirits, we don't just serve food. We craft experiences that linger in memory, spark conversation, 
                 and celebrate the beauty of two rich culinary traditions meeting on a single plate.
               </p>
             </motion.div>
@@ -154,7 +154,7 @@ const ChefPhilosophy = () => {
                   viewport={{ once: true }}
                   transition={{ delay: 2 }}
                 >
-                  Rajveer Singh
+                  Amardeep Singh
                 </motion.text>
               </motion.svg>
               <p className="text-sm text-muted-foreground mt-2">Executive Chef & Co-Founder</p>

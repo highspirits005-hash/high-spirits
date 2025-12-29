@@ -38,7 +38,7 @@ const TimelineSection = () => {
       year: "2020",
       icon: <Award className="w-6 h-6" />,
       title: "Chef's Recognition",
-      description: "Executive Chef Rajveer Singh receives the prestigious 'Chef of the Year' award, cementing High Spirit's position as Australia's premier Indian fine dining destination.",
+      description: "Executive Chef Amardeep Singh receives the prestigious 'Chef of the Year' award, cementing High Spirit's position as Australia's premier Indian fine dining destination.",
       color: "from-primary to-secondary"
     },
     {
