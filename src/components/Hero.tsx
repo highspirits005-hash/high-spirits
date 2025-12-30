@@ -42,7 +42,7 @@ const TaglineCard = ({ text }: { text: string }) => {
 
 const Hero = () => {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen pt-20 md:pt-24 lg:pt-28 flex items-center justify-center overflow-hidden">
       <VideoBackground />
 
       {/* Floating Food Images */}

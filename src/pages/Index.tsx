@@ -14,7 +14,7 @@ import { useRef } from 'react';
 import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
+import chefPortrait from '@/assets/Ishpreet Bedi.jpeg';
 import restaurantAmbience from '@/assets/Image.jpg';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
@@ -87,10 +87,10 @@ const Index = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
-                className="group relative"
+                className="group relative h-full"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative text-center glass-effect rounded-2xl p-8 border border-accent/10 hover:border-accent/30 transition-all duration-500 hover:-translate-y-2">
+                <div className="relative text-center glass-effect rounded-2xl p-8 border border-accent/10 hover:border-accent/30 transition-all duration-500 hover:-translate-y-2 flex flex-col items-center justify-center h-full">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-accent/20 to-accent/5 mb-5 group-hover:scale-110 transition-transform duration-300">
                     <stat.icon className="w-8 h-8 text-accent" />
                   </div>
@@ -281,42 +281,102 @@ const Index = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Emma Thompson',
-                review: 'Absolutely exquisite! The butter chicken was perfection, and the ambience transported us to luxury.',
-                rating: 5,
-              },
-              {
-                name: 'James Wilson',
-                review: 'Best Indian restaurant in Australia. The attention to detail in every dish is remarkable.',
-                rating: 5,
-              },
-              {
-                name: 'Sophia Martinez',
-                review: 'A true fine dining experience. From the moment we walked in, we felt like royalty.',
-                rating: 5,
-              },
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="glass-effect rounded-lg p-8 hover:scale-105 transition-transform duration-300"
-              >
-                <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground italic mb-6 leading-relaxed">
-                  "{testimonial.review}"
-                </p>
-                <p className="text-accent font-semibold">{testimonial.name}</p>
-              </motion.div>
-            ))}
+            {
+              [
+                {
+                  name: 'Frans Buissink',
+                  review: 'Some of the best Indian food to be had in Bunbury. Definitely worth checking out. Buffet of delicious selections at the moment — looking forward to the à la carte menu in the near future.',
+                  rating: 5,
+                  date: '2 days ago',
+                  price: '$20–40',
+                  waitTime: 'No wait',
+                },
+                {
+                  name: 'Gemma Ainsworth',
+                  review: 'Amazing food, five star service and the warmest welcome. Highly recommend the best authentic Indian in Bunbury.',
+                  rating: 5,
+                  date: '2 days ago',
+                  price: '$20–40',
+                  waitTime: 'No wait',
+                },
+                {
+                  name: 'Mohit Sharma',
+                  review: 'Incredible Indian food with bold, authentic flavours. Every dish is fresh, perfectly spiced, and full of character. Great atmosphere, friendly staff, and food that keeps you coming back. A true standout!',
+                  rating: 5,
+                  date: '3 days ago',
+                  price: '$80–100',
+                  waitTime: 'Up to 10 min',
+                },
+                {
+                  name: 'Harsh',
+                  review: 'Service is prompt, professional, and friendly, with staff members who are knowledgeable about the menu. The overall atmosphere is vibrant yet comfortable, making it an ideal place for both casual dining and special occasions.',
+                  rating: 5,
+                  date: '3 days ago',
+                  price: '$60–80',
+                  waitTime: 'No wait',
+                },
+                {
+                  name: 'Sachin Sisodia 1996',
+                  review: 'Amazing Indian food! Rich flavours, perfect spices, and very fresh ingredients. Every dish tasted authentic and delicious. Highly recommended!',
+                  rating: 5,
+                  date: '3 days ago',
+                  price: '',
+                  waitTime: 'No wait',
+                },
+                {
+                  name: 'Abhinav Mehla',
+                  review: 'Best food in the town, friendly staff highly recommended',
+                  rating: 5,
+                  date: '3 days ago',
+                  price: '$20–40',
+                  waitTime: 'No wait',
+                },
+              ].map((testimonial, index) => (
+                <motion.article
+                  key={index}
+                  initial={{ opacity: 0, y: index % 2 === 0 ? 20 : 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: index * 0.12 }}
+                  className="glass-effect rounded-lg p-6 hover:scale-105 transform-gpu transition-transform duration-400 flex flex-col h-full"
+                >
+                  <div className="flex items-start justify-between mb-4 gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-semibold">{testimonial.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+                      <div>
+                        <p className="font-semibold">{testimonial.name}</p>
+                        <p className="text-muted-foreground text-sm">{testimonial.date} · {testimonial.price}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="flex items-center justify-end mb-1">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground">Wait: <span className="text-accent font-medium">{testimonial.waitTime}</span></p>
+                    </div>
+                  </div>
+
+                  <p className="text-muted-foreground italic mb-4 leading-relaxed flex-1">"{testimonial.review}"</p>
+
+                  <div className="mt-4 pt-4 border-t border-accent/10 flex items-center justify-between text-sm gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-muted-foreground">Food:</span>
+                      <span className="font-semibold">5/5</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-muted-foreground">Service:</span>
+                      <span className="font-semibold">5/5</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-muted-foreground">Atmosphere:</span>
+                      <span className="font-semibold">5/5</span>
+                    </div>
+                  </div>
+                </motion.article>
+              ))
+            }
           </div>
         </div>
       </section>
