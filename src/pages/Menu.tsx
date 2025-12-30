@@ -30,6 +30,35 @@ const Menu = () => {
       { name: 'Vindaloo', description: 'Goan-style fiery curry with tender meat and potatoes', price: 36, image: roganJosh },
       { name: 'Korma', description: 'Mild creamy curry with nuts and aromatic spices', price: 34, image: heroDish1 },
     ],
+    buffet: [
+      {
+        name: 'High Spirits Buffet',
+        description: 'A curated buffet featuring a rotating selection of starters, signature curries and desserts — the perfect way to experience a wide range of our culinary offerings.',
+        sections: {
+          starters: [
+            'Veg Samosa - Crispy pastry with spiced vegetables',
+            'Mixed Pakoras - Assorted vegetables in gram flour batter',
+            'Fish Pakoras - Tender fish in a crispy coating',
+            'Honey Chilli Chicken - Spicy and sweet glazed chicken'
+          ],
+          signatureCurries: [
+            'Butter Chicken - Tender chicken in rich tomato cream sauce',
+            'Lamb Saag - Lamb cooked with creamy spinach',
+            'Lamb Vindaloo - Fiery lamb curry with potatoes',
+            'Dal Makhani - Slow-cooked black lentils with butter and cream',
+            'Chana Masala - Chickpea curry with aromatic spices',
+            'Shahi Paneer - Cottage cheese in creamy fenugreek sauce'
+          ],
+          desserts: [
+            'Gulab Jamun - Milk dumplings in rose-cardamom syrup',
+            'Rice Pudding - Creamy rice pudding with cardamom and nuts'
+          ]
+        },
+        priceLabel: '$35',
+        price: 35,
+        note: 'Available daily from 5:30 PM'
+      }
+    ],
     breads: [
       { name: 'Butter Naan', description: 'Traditional leavened bread brushed with butter', price: 6, image: naan },
       { name: 'Garlic Naan', description: 'Naan topped with fresh garlic and herbs', price: 7, image: naan },
@@ -116,6 +145,9 @@ const Menu = () => {
               <TabsTrigger value="mains" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 Mains
               </TabsTrigger>
+              <TabsTrigger value="buffet" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                Buffet
+              </TabsTrigger>
               <TabsTrigger value="breads" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 Breads
               </TabsTrigger>
@@ -128,55 +160,106 @@ const Menu = () => {
               <TabsTrigger value="wines" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 Wine List
               </TabsTrigger>
-            </TabsList>
+            </TabsList> 
 
             {Object.entries(menuCategories).map(([category, items]) => (
               <TabsContent key={category} value={category} className="space-y-8">
-                {items.map((item: { featured?: boolean; image?: string; name: string; description?: string; price?: number; type?: string }, index: number) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className={`glass-effect rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 ${
-                      item.featured ? 'border-2 border-accent gold-glow' : ''
-                    }`}
-                  >
-                    <div className="grid md:grid-cols-[200px_1fr] gap-6 p-6">
-                      {item.image && (
-                        <div className="relative overflow-hidden rounded-lg h-48 md:h-auto">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover"
-                          />
-                          {item.featured && (
-                            <div className="absolute top-2 right-2 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold">
-                              Chef's Special
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      <div className="flex flex-col justify-center">
-                        <div className="flex items-start justify-between mb-2">
+                {category === 'buffet' ? (
+                  items.map((buffetItem: any, idx: number) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                      className={`glass-effect rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 border-2 border-accent gold-glow p-8`}
+                    >
+                      <div className="max-w-3xl mx-auto text-foreground">
+                        <h2 className="text-3xl md:text-4xl font-playfair font-bold text-luxury mb-4">{buffetItem.name}</h2>
+                        <p className="text-muted-foreground mb-6">{buffetItem.description}</p>
+
+                        <div className="bg-primary/80 p-6 rounded-md border border-accent/20">
                           <div>
-                            <h3 className="text-2xl font-playfair font-bold text-foreground">
-                              {item.name}
-                            </h3>
-                            {item.type && (
-                              <span className="inline-block mt-2 px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full">
-                                {item.type}
-                              </span>
-                            )}
+                            <h4 className="text-accent font-semibold mb-2">Starters</h4>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                              {buffetItem.sections.starters.map((s: string, i: number) => (
+                                <li key={i}>{s}</li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="mt-4">
+                            <h4 className="text-accent font-semibold mb-2">Signature Curries</h4>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                              {buffetItem.sections.signatureCurries.map((s: string, i: number) => (
+                                <li key={i}>{s}</li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="mt-4">
+                            <h4 className="text-accent font-semibold mb-2">Desserts</h4>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                              {buffetItem.sections.desserts.map((s: string, i: number) => (
+                                <li key={i}>{s}</li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {item.description}
-                        </p>
+
+                        <div className="text-center mt-6">
+                          <div className="text-4xl md:text-5xl font-playfair text-luxury font-bold">{buffetItem.priceLabel} <span className="text-base font-medium text-muted-foreground">Per Person</span></div>
+                          <p className="text-muted-foreground mt-2">{buffetItem.note}</p>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))
+                ) : (
+                  items.map((item: { featured?: boolean; image?: string; name: string; description?: string; price?: number; type?: string }, index: number) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className={`glass-effect rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 ${
+                        item.featured ? 'border-2 border-accent gold-glow' : ''
+                      }`}
+                    >
+                      <div className="grid md:grid-cols-[200px_1fr] gap-6 p-6">
+                        {item.image && (
+                          <div className="relative overflow-hidden rounded-lg h-48 md:h-auto">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-full h-full object-cover"
+                            />
+                            {item.featured && (
+                              <div className="absolute top-2 right-2 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold">
+                                Chef's Special
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        <div className="flex flex-col justify-center">
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <h3 className="text-2xl font-playfair font-bold text-foreground">
+                                {item.name}
+                              </h3>
+                              {item.type && (
+                                <span className="inline-block mt-2 px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full">
+                                  {item.type}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
               </TabsContent>
             ))}
           </Tabs>
