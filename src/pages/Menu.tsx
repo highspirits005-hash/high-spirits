@@ -1,104 +1,282 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import heroDish1 from '@/assets/hero-dish-1.jpg';
-import heroDish2 from '@/assets/hero-dish-2.jpg';
-import heroDish3 from '@/assets/hero-dish-3.jpg';
-import dalMakhani from '@/assets/dish-dal-makhani.jpg';
-import palakPaneer from '@/assets/dish-palak-paneer.jpg';
-import roganJosh from '@/assets/dish-rogan-josh.jpg';
-import naan from '@/assets/dish-naan.jpg';
+import { MenuItemSkeleton } from '@/components/skeletons/MenuItemSkeleton';
+import ShareButtons from '@/components/ShareButtons';
+
+
+interface StrapiImage {
+  url: string;
+  alternativeText?: string | null;
+  formats?: {
+    small?: { url: string };
+    medium?: { url: string };
+    thumbnail?: { url: string };
+  };
+}
+
+
+interface MenuItem {
+  id: number;
+  documentId?: string;
+  title: string;
+  shortDescription: string;
+  price: number;
+  priceLabel?: string;
+  featured: boolean;
+  displayOrder?: number;
+  image?: StrapiImage | null;
+  // Legacy support
+  attributes?: {
+    title: string;
+    shortDescription: string;
+    price: number;
+    priceLabel: string;
+    featured: boolean;
+    displayOrder: number;
+    image: StrapiImage | { data?: { attributes?: { url: string; alternativeText?: string } } };
+  };
+}
+
+
+interface MenuCategory {
+  id: number;
+  documentId?: string;
+  title: string;
+  slug: string;
+  displayOrder?: number;
+  menu_items?: MenuItem[];
+  attributes?: {
+    title: string;
+    slug: string;
+    displayOrder: number;
+    menu_items?: {
+      data: MenuItem[];
+    };
+  };
+}
+
+interface DrinkItem {
+  id: number;
+  documentId: string;
+  name: string;
+  price: number;
+  description: string | null;
+  order: number;
+  isAlcoholic: boolean | null;
+  drink_category: {
+    id: number;
+    documentId: string;
+    title: string;
+    slug: string;
+    order: number;
+  } | null;
+}
+
+interface DrinkCategory {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  order: number;
+  drink_items: DrinkItem[];
+}
+
+interface BuffetItem {
+  id: number;
+  name: string;
+  description: string | null;
+  isVeg: boolean | null;
+  isSpicy: boolean | null;
+  order: number;
+}
+
+interface BuffetCategory {
+  id: number;
+  title: string;
+  order: number;
+  price: number;
+  buffet_items: BuffetItem[];
+}
 
 const Menu = () => {
-  const menuCategories = {
-    starters: [
-      { name: 'Tandoori Chicken', description: 'Clay oven roasted chicken marinated in yogurt and spices', price: 24, image: heroDish2 },
-      { name: 'Paneer Tikka', description: 'Cottage cheese cubes with bell peppers and aromatic spices', price: 22, image: heroDish2 },
-      { name: 'Seekh Kebab', description: 'Minced lamb skewers with traditional herbs', price: 26, image: heroDish2 },
-      { name: 'Samosa Chaat', description: 'Crispy samosas topped with chickpeas, yogurt, and tamarind chutney', price: 18, image: heroDish2 },
-      { name: 'Chicken 65', description: 'Spicy fried chicken with curry leaves and green chilies', price: 24, image: heroDish2 },
-    ],
-    mains: [
-      { name: 'Butter Chicken', description: 'Tender chicken in rich tomato cream sauce', price: 32, image: heroDish1, featured: true },
-      { name: 'Dal Makhani', description: 'Slow-cooked black lentils with butter and cream', price: 26, image: dalMakhani },
-      { name: 'Rogan Josh', description: 'Kashmiri lamb curry with aromatic spices', price: 38, image: roganJosh },
-      { name: 'Palak Paneer', description: 'Cottage cheese in creamy spinach gravy', price: 28, image: palakPaneer },
-      { name: 'Biryani', description: 'Fragrant basmati rice with meat or vegetables', price: 34, image: heroDish3 },
-      { name: 'Vindaloo', description: 'Goan-style fiery curry with tender meat and potatoes', price: 36, image: roganJosh },
-      { name: 'Korma', description: 'Mild creamy curry with nuts and aromatic spices', price: 34, image: heroDish1 },
-    ],
-    buffet: [
-      {
-        name: 'High Spirits Buffet',
-        description: 'A curated buffet featuring a rotating selection of starters, signature curries and desserts — the perfect way to experience a wide range of our culinary offerings.',
-        sections: {
-          starters: [
-            'Veg Samosa - Crispy pastry with spiced vegetables',
-            'Mixed Pakoras - Assorted vegetables in gram flour batter',
-            'Fish Pakoras - Tender fish in a crispy coating',
-            'Honey Chilli Chicken - Spicy and sweet glazed chicken'
-          ],
-          signatureCurries: [
-            'Butter Chicken - Tender chicken in rich tomato cream sauce',
-            'Lamb Saag - Lamb cooked with creamy spinach',
-            'Lamb Vindaloo - Fiery lamb curry with potatoes',
-            'Dal Makhani - Slow-cooked black lentils with butter and cream',
-            'Chana Masala - Chickpea curry with aromatic spices',
-            'Shahi Paneer - Cottage cheese in creamy fenugreek sauce'
-          ],
-          desserts: [
-            'Gulab Jamun - Milk dumplings in rose-cardamom syrup',
-            'Rice Pudding - Creamy rice pudding with cardamom and nuts'
-          ]
-        },
-        priceLabel: '$35',
-        price: 35,
-        note: 'Available daily from 5:30 PM'
+  const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
+  const [drinkCategories, setDrinkCategories] = useState<DrinkCategory[]>([]);
+  const [buffetCategories, setBuffetCategories] = useState<BuffetCategory[]>([]);
+  const [selectedDrinkCategory, setSelectedDrinkCategory] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [buffetLoading, setBuffetLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch menu items directly and group by category
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const apiUrl = new URL('https://calm-actor-864a39d720.strapiapp.com/api/menu-items');
+        apiUrl.searchParams.append('populate', '*');
+        apiUrl.searchParams.append('sort', 'displayOrder:asc');
+
+        console.log('Fetching menu items from:', apiUrl.toString());
+
+        const response = await fetch(apiUrl.toString());
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data: any = await response.json();
+        console.log('Full API Response:', data);
+        
+        const items = data.data || [];
+        console.log('Raw Items:', items);
+        
+        // Group items by category
+        const categoryMap = new Map<number, any>();
+        
+        items.forEach((item: any) => {
+          const category = item.menu_category;
+          if (category && category.isActive) {
+            if (!categoryMap.has(category.id)) {
+              categoryMap.set(category.id, {
+                id: category.id,
+                documentId: category.documentId,
+                title: category.title,
+                slug: category.slug,
+                displayOrder: category.displayOrder,
+                menu_items: [],
+              });
+            }
+            const catData = categoryMap.get(category.id)!;
+            catData.menu_items.push(item);
+          }
+        });
+
+        // Convert to sorted array
+        const sortedCategories = Array.from(categoryMap.values()).sort(
+          (a, b) => a.displayOrder - b.displayOrder
+        );
+        
+        console.log('Grouped Categories:', sortedCategories);
+        setMenuCategories(sortedCategories);
+      } catch (err) {
+        console.error('Error fetching menu items:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setIsLoading(false);
       }
-    ],
-    breads: [
-      { name: 'Butter Naan', description: 'Traditional leavened bread brushed with butter', price: 6, image: naan },
-      { name: 'Garlic Naan', description: 'Naan topped with fresh garlic and herbs', price: 7, image: naan },
-      { name: 'Tandoori Roti', description: 'Whole wheat flatbread from the clay oven', price: 5, image: naan },
-      { name: 'Cheese Naan', description: 'Naan stuffed with mozzarella and herbs', price: 9, image: naan },
-      { name: 'Kulcha', description: 'Leavened flatbread stuffed with spiced potatoes', price: 8, image: naan },
-    ],
-    desserts: [
-      { name: 'Gulab Jamun', description: 'Milk dumplings in rose-cardamom syrup', price: 12 },
-      { name: 'Kulfi', description: 'Traditional Indian ice cream with pistachios', price: 14 },
-      { name: 'Rasmalai', description: 'Cottage cheese patties in sweetened milk', price: 14 },
-      { name: 'Gajar Halwa', description: 'Warm carrot pudding with nuts and saffron', price: 13 },
-    ],
-    tasting: [
-      { 
-        name: '7-Course Degustation', 
-        description: 'A curated journey through our signature dishes, showcasing the finest seasonal ingredients and culinary techniques. Includes amuse-bouche, two starters, two mains, cheese course, and dessert.',
-        price: 125,
-        featured: true
-      },
-      { 
-        name: '10-Course Chef\'s Table', 
-        description: 'An exclusive experience at our Chef\'s Table with personalized menu, kitchen tour, and interaction with Chef Amardeep Singh. Features rare ingredients and innovative preparations not available on the regular menu.',
-        price: 185,
-        featured: true
-      },
-      { 
-        name: 'Vegetarian Tasting Menu', 
-        description: 'Seven exquisite vegetarian courses celebrating the diversity of Indian vegetable-based cuisine. From farm-fresh seasonal produce to heritage legumes and artisanal dairy.',
-        price: 110
-      },
-    ],
-    wines: [
-      { name: 'Penfolds Grange (Shiraz)', description: 'South Australia - Full-bodied, rich tannins', price: 120, type: 'Red' },
-      { name: 'Henschke Hill of Grace (Shiraz)', description: 'Eden Valley - Complex, elegant, age-worthy', price: 150, type: 'Red' },
-      { name: 'Leeuwin Estate Art Series (Chardonnay)', description: 'Margaret River - Refined, creamy, oak-aged', price: 85, type: 'White' },
-      { name: 'Cloudy Bay (Sauvignon Blanc)', description: 'New Zealand - Crisp, tropical, vibrant', price: 75, type: 'White' },
-      { name: 'Dom Pérignon (Champagne)', description: 'France - Prestige cuvée, fine bubbles', price: 350, type: 'Sparkling' },
-    ]
-  };
+    };
+
+    fetchMenuItems();
+  }, []);
+
+  // Fetch drink items and group by category
+  useEffect(() => {
+    const fetchDrinkItems = async () => {
+      try {
+        const apiUrl = new URL('https://calm-actor-864a39d720.strapiapp.com/api/drink-items');
+        
+        apiUrl.searchParams.append('filters[isActive][$eq]', 'true');
+        apiUrl.searchParams.append('fields[0]', 'name');
+        apiUrl.searchParams.append('fields[1]', 'price');
+        apiUrl.searchParams.append('fields[2]', 'description');
+        apiUrl.searchParams.append('fields[3]', 'order');
+        apiUrl.searchParams.append('fields[4]', 'isAlcoholic');
+        apiUrl.searchParams.append('sort', 'order:asc');
+        apiUrl.searchParams.append('populate[drink_category][fields][0]', 'title');
+        apiUrl.searchParams.append('populate[drink_category][fields][1]', 'slug');
+        apiUrl.searchParams.append('populate[drink_category][fields][2]', 'order');
+        apiUrl.searchParams.append('populate[drink_category][filters][isActive][$eq]', 'true');
+
+        const itemsRes = await fetch(apiUrl.toString());
+
+        if (!itemsRes.ok) {
+          throw new Error('Failed to fetch drink items');
+        }
+
+        const itemsData = await itemsRes.json();
+        const items = (itemsData.data || []) as DrinkItem[];
+
+        const categoryMap = new Map<string, DrinkCategory>();
+        
+        items.forEach((item) => {
+          if (item.drink_category) {
+            const categorySlug = item.drink_category.slug;
+            if (!categoryMap.has(categorySlug)) {
+              categoryMap.set(categorySlug, {
+                id: item.drink_category.id,
+                documentId: item.drink_category.documentId || '',
+                title: item.drink_category.title,
+                slug: categorySlug,
+                order: item.drink_category.order,
+                drink_items: [],
+              });
+            }
+            const category = categoryMap.get(categorySlug)!;
+            category.drink_items.push(item);
+          }
+        });
+
+        const sortedCategories = Array.from(categoryMap.values()).sort(
+          (a, b) => a.order - b.order
+        );
+
+        setDrinkCategories(sortedCategories);
+
+        if (sortedCategories.length > 0) {
+          setSelectedDrinkCategory(sortedCategories[0].slug);
+        }
+      } catch (error) {
+        console.error('Error fetching drink items:', error);
+      }
+    };
+
+    fetchDrinkItems();
+  }, []);
+
+  // Fetch buffet categories
+  useEffect(() => {
+    const fetchBuffetCategories = async () => {
+      try {
+        setBuffetLoading(true);
+        
+        const apiUrl = new URL('https://calm-actor-864a39d720.strapiapp.com/api/buffet-categories');
+        
+        apiUrl.searchParams.append('fields[0]', 'title');
+        apiUrl.searchParams.append('fields[1]', 'price');
+        apiUrl.searchParams.append('fields[2]', 'order');
+        apiUrl.searchParams.append('sort', 'order:asc');
+        
+        apiUrl.searchParams.append('populate[buffet_items][fields][0]', 'name');
+        apiUrl.searchParams.append('populate[buffet_items][fields][1]', 'description');
+        apiUrl.searchParams.append('populate[buffet_items][fields][2]', 'isVeg');
+        apiUrl.searchParams.append('populate[buffet_items][fields][3]', 'isSpicy');
+        apiUrl.searchParams.append('populate[buffet_items][sort]', 'order:asc');
+
+        const buffetRes = await fetch(apiUrl.toString());
+
+        if (!buffetRes.ok) {
+          throw new Error('Failed to fetch buffet categories');
+        }
+
+        const buffetData = await buffetRes.json();
+        const categories = (buffetData.data || []) as BuffetCategory[];
+
+        setBuffetCategories(categories);
+      } catch (error) {
+        console.error('Error fetching buffet categories:', error);
+      } finally {
+        setBuffetLoading(false);
+      }
+    };
+
+    fetchBuffetCategories();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -135,133 +313,274 @@ const Menu = () => {
       </section>
 
       {/* Menu Section */}
-      <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
-        <div className="container mx-auto px-4">
-          <Tabs defaultValue="mains" className="w-full max-w-6xl mx-auto">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 mb-12 bg-secondary/50 p-2 rounded-lg">
-              <TabsTrigger value="starters" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Starters
-              </TabsTrigger>
-              <TabsTrigger value="mains" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Mains
-              </TabsTrigger>
-              <TabsTrigger value="buffet" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+      <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background to-secondary/20">
+        <div className="container mx-auto px-4 md:px-6">
+          <Tabs defaultValue={menuCategories[0]?.slug || menuCategories[0]?.attributes?.slug || 'starters'} className="w-full">
+            <TabsList className="flex flex-wrap justify-center gap-1 md:gap-2 mb-8 md:mb-12 bg-secondary/50 p-2 rounded-lg h-auto w-fit mx-auto">
+              {menuCategories.map((category: any) => {
+                const slug = category.slug || category.attributes?.slug || `category-${category.id}`;
+                const title = category.title || category.attributes?.title || 'Menu';
+                return (
+                  <TabsTrigger
+                    key={category.id}
+                    value={slug}
+                    className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  >
+                    {title}
+                  </TabsTrigger>
+                );
+              })}
+              <TabsTrigger value="buffet" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 Buffet
               </TabsTrigger>
-              <TabsTrigger value="breads" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Breads
+              <TabsTrigger value="drinks" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                Drinks
               </TabsTrigger>
-              <TabsTrigger value="desserts" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Desserts
-              </TabsTrigger>
-              <TabsTrigger value="tasting" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Tasting Menus
-              </TabsTrigger>
-              <TabsTrigger value="wines" className="text-base data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Wine List
-              </TabsTrigger>
-            </TabsList> 
+            </TabsList>
 
-            {Object.entries(menuCategories).map(([category, items]) => (
-              <TabsContent key={category} value={category} className="space-y-8">
-                {category === 'buffet' ? (
-                  items.map((buffetItem: any, idx: number) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: idx * 0.1 }}
-                      className={`glass-effect rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 border-2 border-accent gold-glow p-8`}
-                    >
-                      <div className="max-w-3xl mx-auto text-foreground">
-                        <h2 className="text-3xl md:text-4xl font-playfair font-bold text-luxury mb-4">{buffetItem.name}</h2>
-                        <p className="text-muted-foreground mb-6">{buffetItem.description}</p>
+            {/* Menu Categories Tabs */}
+            {menuCategories.map((category: any) => {
+              const slug = category.slug || category.attributes?.slug || `category-${category.id}`;
+              // Handle both new flat structure and old nested structure
+              const menuItems = category.menu_items || category.attributes?.menu_items?.data || [];
 
-                        <div className="bg-primary/80 p-6 rounded-md border border-accent/20">
-                          <div>
-                            <h4 className="text-accent font-semibold mb-2">Starters</h4>
-                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                              {buffetItem.sections.starters.map((s: string, i: number) => (
-                                <li key={i}>{s}</li>
-                              ))}
-                            </ul>
-                          </div>
+              return (
+                <TabsContent key={category.id} value={slug} className="space-y-4 md:space-y-6 lg:space-y-8">
+                  {isLoading ? (
+                    <MenuItemSkeleton count={6} />
+                  ) : menuItems.length > 0 ? (
+                    menuItems.map((item: any, index: number) => {
+                      // Handle both new flat structure and old nested structure
+                      const title = item.title || item.attributes?.title;
+                      const price = item.price || item.attributes?.price;
+                      const shortDescription = item.shortDescription || item.attributes?.shortDescription;
+                      const featured = item.featured !== undefined ? item.featured : item.attributes?.featured;
+                      
+                      // Handle image URL for both structures
+                      let imageUrl: string | null = null;
+                      let imageAlt = title || 'Menu item image';
+                      
+                      // Handle image URL for Strapi v5 flat structure
+                      // Prefer formats.medium if available, fallback to main url (already absolute)
+                      const image = item.image || item.attributes?.image;
+                      imageUrl = image?.formats?.medium?.url || image?.url || null;
+                      imageAlt = image?.alternativeText || title || 'Menu item image';
 
-                          <div className="mt-4">
-                            <h4 className="text-accent font-semibold mb-2">Signature Curries</h4>
-                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                              {buffetItem.sections.signatureCurries.map((s: string, i: number) => (
-                                <li key={i}>{s}</li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div className="mt-4">
-                            <h4 className="text-accent font-semibold mb-2">Desserts</h4>
-                            <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                              {buffetItem.sections.desserts.map((s: string, i: number) => (
-                                <li key={i}>{s}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-
-                        <div className="text-center mt-6">
-                          <div className="text-4xl md:text-5xl font-playfair text-luxury font-bold">{buffetItem.priceLabel} <span className="text-base font-medium text-muted-foreground">Per Person</span></div>
-                          <p className="text-muted-foreground mt-2">{buffetItem.note}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))
-                ) : (
-                  items.map((item: { featured?: boolean; image?: string; name: string; description?: string; price?: number; type?: string }, index: number) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className={`glass-effect rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 ${
-                        item.featured ? 'border-2 border-accent gold-glow' : ''
-                      }`}
-                    >
-                      <div className="grid md:grid-cols-[200px_1fr] gap-6 p-6">
-                        {item.image && (
-                          <div className="relative overflow-hidden rounded-lg h-48 md:h-auto">
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                            {item.featured && (
-                              <div className="absolute top-2 right-2 bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold">
-                                Chef's Special
+                      return (
+                        <motion.div
+                          key={item.id}
+                          initial={{ opacity: 0, y: 30 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          className={`glass-effect rounded-lg md:rounded-xl overflow-hidden hover:scale-[1.01] md:hover:scale-[1.02] transition-transform duration-300 ${
+                            featured ? 'border-2 border-accent gold-glow' : ''
+                          }`}
+                        >
+                          <div className="grid grid-cols-1 md:grid-cols-[150px_1fr] lg:grid-cols-[200px_1fr] gap-4 md:gap-6 p-4 md:p-6">
+                            {imageUrl ? (
+                              <div className="relative overflow-hidden rounded-lg h-40 md:h-48 lg:h-auto">
+                                <img
+                                  src={imageUrl}
+                                  alt={imageAlt}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).style.display = 'none';
+                                  }}
+                                />
+                                {featured && (
+                                  <div className="absolute top-2 right-2 bg-accent text-accent-foreground px-2 md:px-3 py-1 rounded-full text-xs font-semibold">
+                                    Chef's Special
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="relative overflow-hidden rounded-lg h-40 md:h-48 lg:h-auto bg-secondary/50 flex items-center justify-center">
+                                <p className="text-muted-foreground text-sm">No Image</p>
                               </div>
                             )}
-                          </div>
-                        )}
-                        <div className="flex flex-col justify-center">
-                          <div className="flex items-start justify-between mb-2">
-                            <div>
-                              <h3 className="text-2xl font-playfair font-bold text-foreground">
-                                {item.name}
-                              </h3>
-                              {item.type && (
-                                <span className="inline-block mt-2 px-3 py-1 bg-accent/20 text-accent text-xs font-semibold rounded-full">
-                                  {item.type}
+
+                            <div className="flex flex-col justify-center flex-1">
+                              <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-2 md:mb-3 gap-2">
+                                <h3 className="text-lg md:text-xl lg:text-2xl font-playfair font-bold text-foreground">
+                                  {title}
+                                </h3>
+                                <span className="text-xl md:text-2xl font-bold text-accent flex-shrink-0">
+                                  ${price?.toFixed(2)}
                                 </span>
-                              )}
+                              </div>
+                              <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3">
+                                {shortDescription}
+                              </p>
+                              <ShareButtons
+                                title={title}
+                                description={shortDescription}
+                                hashtags={['HighSpirits', 'IndianCuisine', 'FineFood', 'MusTry']}
+                                showLabel={true}
+                                size="sm"
+                              />
                             </div>
                           </div>
-                          <p className="text-muted-foreground leading-relaxed">
-                            {item.description}
-                          </p>
-                        </div>
+                        </motion.div>
+                      );
+                    })
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground text-lg">No items available in this category</p>
+                    </div>
+                  )}
+                </TabsContent>
+              );
+            })}
+
+            {/* Buffet Tab */}
+            <TabsContent value="buffet" className="space-y-4 md:space-y-6 lg:space-y-8">
+              {buffetLoading ? (
+                <MenuItemSkeleton count={4} />
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="glass-effect rounded-lg md:rounded-xl overflow-hidden border-2 border-accent gold-glow p-6 md:p-10 max-w-4xl mx-auto"
+                >
+                  <div className="space-y-8">
+                    <div className="text-center">
+                      <h2 className="text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-accent mb-2">
+                        High Spirits Buffet
+                      </h2>
+                      <p className="text-muted-foreground">Complete dining experience</p>
+                    </div>
+
+                    {buffetCategories.map((buffetCategory) => (
+                      <div key={buffetCategory.id} className="space-y-3">
+                        <h3 className="text-xl md:text-2xl font-playfair font-bold text-accent border-b border-accent/30 pb-2">
+                          {buffetCategory.title}
+                        </h3>
+                        <ul className="space-y-2">
+                          {buffetCategory.buffet_items.map((item: any) => (
+                            <li key={item.id} className="flex items-start gap-3">
+                              <span className="text-accent text-lg mt-1">•</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <p className="text-lg font-semibold text-foreground">{item.name}</p>
+                                  {item.isVeg && (
+                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded border-2 border-green-500">
+                                      <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                    </span>
+                                  )}
+                                  {item.isSpicy && (
+                                    <span className="text-xs font-semibold text-red-500">🌶️</span>
+                                  )}
+                                </div>
+                                {item.description && (
+                                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    </motion.div>
-                  ))
-                )}
-              </TabsContent>
-            ))}
+                    ))}
+
+                    <div className="text-center pt-6 border-t border-accent/30">
+                      <p className="text-lg text-muted-foreground mb-2">All for just</p>
+                      {buffetCategories[0]?.price ? (
+                        <>
+                          <p className="text-4xl md:text-5xl font-playfair font-bold text-accent">
+                            ${buffetCategories[0].price} <span className="text-xl">Per Person</span>
+                          </p>
+                          <p className="text-sm text-muted-foreground mt-3">Available daily from 5:30 PM</p>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </TabsContent>
+
+            {/* Drinks Tab */}
+            <TabsContent value="drinks" className="space-y-8 md:space-y-12">
+              <div className="text-center mb-8 md:mb-12">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-accent mb-3">Our Curated Selection</h2>
+                <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">Discover our handpicked collection of drinks, from refreshing beverages to premium spirits</p>
+              </div>
+
+              <div className="flex flex-wrap gap-2 md:gap-3 lg:gap-4 justify-center">
+                {drinkCategories.map((category, idx) => (
+                  <motion.button
+                    key={category.id}
+                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ delay: idx * 0.08 }}
+                    whileHover={{ scale: 1.08, y: -5 }}
+                    onClick={() => setSelectedDrinkCategory(category.slug)}
+                    className={`px-4 md:px-7 lg:px-10 py-3 md:py-4 rounded-full font-bold transition-all duration-300 text-xs md:text-sm lg:text-base uppercase tracking-widest relative overflow-hidden group ${
+                      selectedDrinkCategory === category.slug
+                        ? 'bg-accent text-primary gold-glow shadow-xl shadow-accent/60'
+                        : 'border-2 md:border-3 border-accent text-accent hover:bg-accent/10 backdrop-blur-sm'
+                    }`}
+                  >
+                    <span className="relative z-10">{category.title}</span>
+                  </motion.button>
+                ))}
+              </div>
+
+              <div className="space-y-4 md:space-y-5 lg:space-y-6">
+                {(() => {
+                  const selectedCategory = drinkCategories.find(
+                    (cat) => cat.slug === selectedDrinkCategory
+                  );
+                  const drinks = selectedCategory?.drink_items || [];
+
+                  return drinks.length > 0 ? (
+                    drinks.map((drink: any, index: number) => (
+                      <motion.div
+                        key={drink.id}
+                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.4, delay: index * 0.06 }}
+                        whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(212, 175, 55, 0.2)" }}
+                        className="group relative glass-effect rounded-xl md:rounded-2xl p-5 md:p-8 lg:p-10 hover:scale-[1.02] md:hover:scale-[1.03] transition-all duration-400 border-2 border-accent/40 hover:border-accent/80 backdrop-blur-lg overflow-hidden"
+                      >
+                        <div className="flex flex-col gap-5 md:gap-7 relative z-10">
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between mb-3 md:mb-5 gap-3">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <h3 className="text-lg md:text-2xl lg:text-3xl font-playfair font-bold text-accent group-hover:text-amber-300 transition-colors duration-300">
+                                    {drink.name}
+                                  </h3>
+                                  {drink.isAlcoholic && (
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/20 text-accent border border-accent/40">
+                                      Alcoholic
+                                    </span>
+                                  )}
+                                </div>
+                                {drink.description && (
+                                  <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed group-hover:text-muted-foreground transition-colors">
+                                    {drink.description}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <div className="pt-4 md:pt-6 border-t border-accent/20">
+                              <p className="text-2xl md:text-3xl font-bold text-accent/90 group-hover:text-amber-300 transition-colors">
+                                ${drink.price.toFixed(2)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground text-lg">No drinks available in this category</p>
+                    </div>
+                  );
+                })()}
+              </div>
+            </TabsContent>
           </Tabs>
 
           <motion.div
