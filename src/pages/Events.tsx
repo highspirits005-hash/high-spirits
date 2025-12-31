@@ -1,49 +1,46 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, Sparkles, Music, Utensils, PartyPopper } from 'lucide-react';
 import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
 
 const Events = () => {
-  const eventTypes = [
-    {
-      icon: PartyPopper,
-      title: 'Private Celebrations',
-      description: 'Birthday parties, anniversaries, and milestone celebrations',
-      capacity: 'Up to 80 guests',
-    },
-    {
-      icon: Users,
-      title: 'Corporate Events',
-      description: 'Business dinners, team building, and corporate gatherings',
-      capacity: 'Up to 100 guests',
-    },
-    {
-      icon: Sparkles,
-      title: 'Weddings & Receptions',
-      description: 'Elegant wedding receptions and engagement celebrations',
-      capacity: 'Up to 120 guests',
-    },
-    {
-      icon: Utensils,
-      title: 'Catering Services',
-      description: 'Off-site catering for your special occasions',
-      capacity: 'Any size',
-    },
-    {
-      icon: Music,
-      title: 'Wedding Catering',
-      description: 'Exquisite menus for your perfect day with full service',
-      capacity: 'Up to 300 guests',
-    },
-    {
-      icon: Calendar,
-      title: 'Private Venues',
-      description: 'Exclusive venue hire for intimate or grand events',
-      capacity: 'Full venue available',
-    },
-  ];
+  const [eventTypes, setEventTypes] = useState<Array<any>>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchEvents = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('https://calm-actor-864a39d720.strapiapp.com/api/event-services?populate=*');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const json = await res.json();
+        const items = (json?.data || []).map((it: any) => {
+          const attr = it.attributes || it;
+          return {
+            id: it.id,
+            title: attr.title || attr.name || '',
+            description: attr.shortDescription || attr.description || attr.content || '',
+            capacity: attr.capacity || attr.maxGuests || undefined,
+            publishedAt: attr.publishedAt || undefined,
+          };
+        });
+
+        if (mounted) setEventTypes(items);
+      } catch (e) {
+        console.warn('Failed to fetch event services', e);
+        if (mounted) setEventTypes([]);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchEvents();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -114,7 +111,12 @@ const Events = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {eventTypes.map((event, index) => (
+            {loading ? (
+              <div className="col-span-2 text-center py-12">Loading event services…</div>
+            ) : eventTypes.length === 0 ? (
+              <div className="col-span-2 text-center py-12">No event services available.</div>
+            ) : (
+              eventTypes.map((event, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 40 }}
@@ -124,7 +126,7 @@ const Events = () => {
                 className="glass-effect rounded-lg p-8 hover:scale-105 transition-transform duration-300"
               >
                 <div className="w-16 h-16 mb-6 rounded-full bg-accent/20 flex items-center justify-center">
-                  <event.icon className="w-8 h-8 text-accent" />
+                  <PartyPopper className="w-8 h-8 text-accent" />
                 </div>
                 <h3 className="text-2xl font-playfair font-bold text-foreground mb-3">
                   {event.title}
@@ -137,7 +139,8 @@ const Events = () => {
                   {event.capacity}
                 </p>
               </motion.div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>
