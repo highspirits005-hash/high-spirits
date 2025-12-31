@@ -88,8 +88,8 @@ const Footer = () => {
               {/* UPDATED PHONE */}
               <li className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-accent flex-shrink-0" />
-                <a href="tel:0451382958" className="text-muted-foreground hover:text-accent transition-colors">
-                  0451382958
+                <a href="tel:+61 420-408-809" className="text-muted-foreground hover:text-accent transition-colors">
+                  +61 420-408-809
                 </a>
               </li>
 
@@ -97,7 +97,7 @@ const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-accent flex-shrink-0" />
                 <span className="text-muted-foreground">
-                 highspirits007@gmail.com
+                 highspirits005@gmail.com
                 </span>
               </li>
 

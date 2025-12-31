@@ -24,7 +24,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      details: ['0451382958'],
+      details: ['+61 420-408-809'],
     },
     {
       icon: Mail,

@@ -220,7 +220,7 @@ const Reservations = () => {
                 href="tel:+61234567890"
                 className="text-2xl font-playfair font-bold text-accent hover:text-accent/80 transition-colors"
               >
-                +61 2 3456 7890
+                +61 420-408-809
               </a>
             </motion.div>
           </div>
