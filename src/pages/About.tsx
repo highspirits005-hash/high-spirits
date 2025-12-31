@@ -112,11 +112,11 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                At High Spirit, we are dedicated to bringing you the most authentic and luxurious Indian dining experience in Australia. Our mission is to honor traditional recipes while presenting them with contemporary elegance.
+               At High Spirits, we bring the soul of India to the heart of Bunbury, WA, crafting an experience that goes far beyond a meal. As a refined restaurant & bar, our vision is rooted in authenticity, honouring time-loved Indian recipes while presenting them with modern elegance and thoughtful detail.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                We believe that food is more than sustenance—it's an art form, a cultural bridge, and a celebration of life's finest moments. Every dish we serve tells a story of heritage, passion, and uncompromising quality.
-              </p>
+                We see food as an art form and a celebration of culture, connection, and life’s finest moments. Every dish carries a story of heritage, passion, and uncompromising quality, designed to be savoured slowly and remembered fondly. From warm hospitality to elevated flavours, High Spirits proudly represents Indian fine dining at its most expressive, setting a new benchmark for fine dining Australia can truly be proud of right here in Bunbury.
+                </p>
             </motion.div>
           </div>
         </div>
