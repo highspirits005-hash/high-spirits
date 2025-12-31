@@ -10,7 +10,7 @@ import ChefPhilosophy from '@/components/ChefPhilosophy';
 import MenuStory from '@/components/MenuStory';
 import Carousel3D from '@/components/Carousel3D';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -38,38 +38,93 @@ const Index = () => {
     { icon: Star, value: '5.0', label: 'Google Rating' },
   ];
 
-  const carouselItems = [
+  
+
+  const [carouselItems, setCarouselItems] = useState<Array<{ image: string; title: string; description: string }>>([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchSignature = async () => {
+      try {
+        const res = await fetch('https://calm-actor-864a39d720.strapiapp.com/api/signature-creations?populate=*');
+        if (!res.ok) throw new Error('Failed to fetch signature creations');
+        const json = await res.json();
+        const items = (json?.data || []).map((it: any) => {
+          const img = it.image;
+          const url = img?.formats?.medium?.url || img?.formats?.small?.url || img?.url || null;
+          return {
+            image: url,
+            title: it.title || '',
+            description: it.shortDescription || ''
+          };
+        }).filter((i: any) => i.image);
+
+        if (mounted) setCarouselItems(items);
+      } catch (e) {
+        console.warn('Failed to load signature creations', e);
+        if (mounted) setCarouselItems([]);
+      }
+    };
+
+    fetchSignature();
+    return () => { mounted = false; };
+  }, []);
+  const fallbackTestimonials = [
     {
-      image: heroDish1,
-      title: "Signature Butter Chicken",
-      description: "Our most celebrated dish—succulent chicken in a velvety tomato and butter sauce, perfected over two decades"
+      name: 'Frans Buissink',
+      review: 'Some of the best Indian food to be had in Bunbury. Definitely worth checking out. Buffet of delicious selections at the moment — looking forward to the à la carte menu in the near future.',
+      rating: 5,
+      date: '2 days ago',
+      price: '$20–40',
+      waitTime: 'No wait',
     },
     {
-      image: heroDish2,
-      title: "Tandoori Mixed Grill",
-      description: "A premium selection of tandoor-roasted meats, marinated in aromatic spices and Australian native herbs"
+      name: 'Gemma Ainsworth',
+      review: 'Amazing food, five star service and the warmest welcome. Highly recommend the best authentic Indian in Bunbury.',
+      rating: 5,
+      date: '2 days ago',
+      price: '$20–40',
+      waitTime: 'No wait',
     },
     {
-      image: heroDish3,
-      title: "Biryani Royale",
-      description: "Fragrant basmati rice layered with tender lamb, saffron, and 23 secret spices—a royal feast"
+      name: 'Mohit Sharma',
+      review: 'Incredible Indian food with bold, authentic flavours. Every dish is fresh, perfectly spiced, and full of character. Great atmosphere, friendly staff, and food that keeps you coming back. A true standout!',
+      rating: 5,
+      date: '3 days ago',
+      price: '$80–100',
+      waitTime: 'Up to 10 min',
     },
-    {
-      image: dalMakhani,
-      title: "Truffle Dal Makhani",
-      description: "18-hour slow-cooked black lentils finished with cream and Australian black truffle"
-    },
-    {
-      image: palakPaneer,
-      title: "Palak Paneer Supreme",
-      description: "Silky spinach sauce with house-made paneer, enhanced with organic Victorian produce"
-    },
-    {
-      image: roganJosh,
-      title: "Tasmanian Lamb Rogan Josh",
-      description: "Premium Tasmanian lamb in aromatic Kashmiri gravy—where Australian meets authentic"
-    }
   ];
+
+  const [testimonials, setTestimonials] = useState(fallbackTestimonials);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch('https://calm-actor-864a39d720.strapiapp.com/api/guest-reviews');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const json = await res.json();
+        const items = (json?.data || [])
+          .map((it: any) => ({
+            name: it.guestName || 'Guest',
+            review: (it.reviewText || '').replace(/^"|"$/g, '').trim(),
+            rating: it.rating ?? 5,
+            date: it.publishedAt ? new Date(it.publishedAt).toLocaleDateString() : '',
+            price: '',
+            waitTime: ''
+          }))
+          .sort((a: any, b: any) => (a.displayOrder || 0) - (b.displayOrder || 0));
+
+        if (mounted && items.length) setTestimonials(items);
+      } catch (e) {
+        console.warn('Failed to fetch guest reviews', e);
+      }
+    };
+
+    fetchReviews();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -142,7 +197,7 @@ const Index = () => {
             </p>
           </motion.div>
           
-          <Carousel3D items={carouselItems} />
+          {carouselItems.length > 0 && <Carousel3D items={carouselItems} />}
         </div>
       </section>
       
@@ -281,57 +336,8 @@ const Index = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {
-              [
-                {
-                  name: 'Frans Buissink',
-                  review: 'Some of the best Indian food to be had in Bunbury. Definitely worth checking out. Buffet of delicious selections at the moment — looking forward to the à la carte menu in the near future.',
-                  rating: 5,
-                  date: '2 days ago',
-                  price: '$20–40',
-                  waitTime: 'No wait',
-                },
-                {
-                  name: 'Gemma Ainsworth',
-                  review: 'Amazing food, five star service and the warmest welcome. Highly recommend the best authentic Indian in Bunbury.',
-                  rating: 5,
-                  date: '2 days ago',
-                  price: '$20–40',
-                  waitTime: 'No wait',
-                },
-                {
-                  name: 'Mohit Sharma',
-                  review: 'Incredible Indian food with bold, authentic flavours. Every dish is fresh, perfectly spiced, and full of character. Great atmosphere, friendly staff, and food that keeps you coming back. A true standout!',
-                  rating: 5,
-                  date: '3 days ago',
-                  price: '$80–100',
-                  waitTime: 'Up to 10 min',
-                },
-                {
-                  name: 'Harsh',
-                  review: 'Service is prompt, professional, and friendly, with staff members who are knowledgeable about the menu. The overall atmosphere is vibrant yet comfortable, making it an ideal place for both casual dining and special occasions.',
-                  rating: 5,
-                  date: '3 days ago',
-                  price: '$60–80',
-                  waitTime: 'No wait',
-                },
-                {
-                  name: 'Sachin Sisodia 1996',
-                  review: 'Amazing Indian food! Rich flavours, perfect spices, and very fresh ingredients. Every dish tasted authentic and delicious. Highly recommended!',
-                  rating: 5,
-                  date: '3 days ago',
-                  price: '',
-                  waitTime: 'No wait',
-                },
-                {
-                  name: 'Abhinav Mehla',
-                  review: 'Best food in the town, friendly staff highly recommended',
-                  rating: 5,
-                  date: '3 days ago',
-                  price: '$20–40',
-                  waitTime: 'No wait',
-                },
-              ].map((testimonial, index) => (
+              {
+              testimonials.map((testimonial, index) => (
                 <motion.article
                   key={index}
                   initial={{ opacity: 0, y: index % 2 === 0 ? 20 : 40 }}
@@ -342,38 +348,26 @@ const Index = () => {
                 >
                   <div className="flex items-start justify-between mb-4 gap-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-semibold">{testimonial.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+                      <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-semibold">{testimonial.name.split(' ').map((n:any)=>n[0]).slice(0,2).join('')}</div>
                       <div>
                         <p className="font-semibold">{testimonial.name}</p>
-                        <p className="text-muted-foreground text-sm">{testimonial.date} · {testimonial.price}</p>
+                        {(testimonial.title || testimonial.publishedAt) && (
+                          <p className="text-muted-foreground text-sm">{[testimonial.title, testimonial.publishedAt].filter(Boolean).join(' · ')}</p>
+                        )}
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="flex items-center justify-end mb-1">
-                        {[...Array(testimonial.rating)].map((_, i) => (
+                        {Array.from({ length: testimonial.rating || 0 }).map((_, i) => (
                           <Star key={i} className="w-4 h-4 fill-accent text-accent" />
                         ))}
                       </div>
-                      <p className="text-sm text-muted-foreground">Wait: <span className="text-accent font-medium">{testimonial.waitTime}</span></p>
                     </div>
                   </div>
 
                   <p className="text-muted-foreground italic mb-4 leading-relaxed flex-1">"{testimonial.review}"</p>
 
-                  <div className="mt-4 pt-4 border-t border-accent/10 flex items-center justify-between text-sm gap-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-muted-foreground">Food:</span>
-                      <span className="font-semibold">5/5</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-muted-foreground">Service:</span>
-                      <span className="font-semibold">5/5</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-muted-foreground">Atmosphere:</span>
-                      <span className="font-semibold">5/5</span>
-                    </div>
-                  </div>
+                  
                 </motion.article>
               ))
             }

@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import dalMakhani from '@/assets/dish-dal-makhani.jpg';
 import palakPaneer from '@/assets/dish-palak-paneer.jpg';
 import roganJosh from '@/assets/dish-rogan-josh.jpg';
 import naan from '@/assets/dish-naan.jpg';
 
 const IngredientsShowcase = () => {
-  const ingredients = [
+  const fallback = [
     {
       name: "Black Lentils",
       origin: "Punjab, India",
@@ -31,6 +32,36 @@ const IngredientsShowcase = () => {
       description: "Traditional chakki-ground whole wheat, imported directly from heritage mills in Punjab"
     }
   ];
+
+  const [ingredients, setIngredients] = useState(fallback);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchIngredients = async () => {
+      try {
+        const res = await fetch('https://calm-actor-864a39d720.strapiapp.com/api/premium-ingredients?populate=*');
+        if (!res.ok) throw new Error('Network error');
+        const json = await res.json();
+        const items = (json?.data || []).map((it: any) => {
+          const img = it.image;
+          const url = img?.formats?.medium?.url || img?.formats?.small?.url || img?.url || null;
+          return {
+            name: it.title || 'Ingredient',
+            origin: it.shortDescription || '',
+            image: url,
+            description: it.shortDescription || ''
+          };
+        }).filter((i: any) => i.image);
+
+        if (mounted && items.length) setIngredients(items);
+      } catch (e) {
+        console.warn('Failed to load premium ingredients', e);
+      }
+    };
+
+    fetchIngredients();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <section className="py-32 bg-gradient-to-b from-background to-secondary/20 relative overflow-hidden">

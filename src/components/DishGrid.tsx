@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import dalMakhani from '@/assets/dish-dal-makhani.jpg';
 import palakPaneer from '@/assets/dish-palak-paneer.jpg';
 import roganJosh from '@/assets/dish-rogan-josh.jpg';
@@ -8,18 +8,56 @@ import naan from '@/assets/dish-naan.jpg';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
 
-const dishes = [
-  { id: 1, image: heroDish1, name: 'Butter Chicken', category: 'North Indian' },
-  { id: 2, image: heroDish2, name: 'Tandoori Platter', category: 'Punjabi' },
-  { id: 3, image: dalMakhani, name: 'Dal Makhani', category: 'Indian' },
-  { id: 4, image: palakPaneer, name: 'Palak Paneer', category: 'Vegetarian' },
-  { id: 5, image: roganJosh, name: 'Rogan Josh', category: 'Kashmiri' },
-  { id: 6, image: naan, name: 'Assorted Naan', category: 'Breads' },
-];
+type RemoteDish = {
+  id: number;
+  title: string;
+  shortDescription?: string;
+  displayOrder?: number;
+  image?: any;
+};
 
 const DishGrid = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [dishes, setDishes] = useState<Array<{ id: number; image: string; name: string; category?: string }>>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchSignature = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch('https://calm-actor-864a39d720.strapiapp.com/api/signature-dishes?populate=*');
+        if (!res.ok) throw new Error('Network response was not ok');
+        const json = await res.json();
+        const items: RemoteDish[] = json?.data || [];
+        const mapped = items
+          .map((it) => {
+            const img = it.image;
+            // prefer medium, then small, then full url
+            const url = img?.formats?.medium?.url || img?.formats?.small?.url || img?.url || null;
+            return {
+              id: it.id,
+              image: url,
+              name: it.title || it.documentId || 'Dish',
+              category: it.shortDescription || undefined,
+            };
+          })
+          .filter((d) => d.image) // only show if image available
+          .sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
+
+        if (mounted && mapped.length) setDishes(mapped as any);
+      } catch (e) {
+        // keep fallback
+        console.warn('Failed to fetch signature dishes', e);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchSignature();
+    return () => { mounted = false; };
+  }, []);
 
   return (
     <section ref={ref} className="py-24 bg-gradient-to-b from-background to-secondary/20">
@@ -48,8 +86,9 @@ const DishGrid = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {dishes.map((dish, index) => (
+        {dishes.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {dishes.map((dish, index) => (
             <motion.div
               key={dish.id}
               initial={{ opacity: 0, y: 50 }}
@@ -60,7 +99,7 @@ const DishGrid = () => {
             >
               <div className="aspect-square overflow-hidden">
                 <img
-                  src={dish.image}
+                  src={typeof dish.image === 'string' ? dish.image : (dish.image as any)?.default || dish.image}
                   alt={dish.name}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
@@ -82,7 +121,8 @@ const DishGrid = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );
