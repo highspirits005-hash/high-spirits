@@ -13,3 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 Sitemap: https://www.highspirits.au/sitemap.xml
+
