@@ -127,7 +127,7 @@ const MenuStory = () => {
               {
                 number: "03",
                 title: "Plating as Art",
-                detail: "Each dish composed with the precision of a painter, beauty meeting flavor"
+                description: "Each dish composed with the precision of a painter, beauty meeting flavor"
               }
             ].map((item, index) => (
               <motion.div
@@ -136,11 +136,11 @@ const MenuStory = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="text-center"
+                className="text-center overflow-visible"
               >
                 <motion.div
                 
-                  className="text-6xl font-playfair font-bold text-accent/20 mb-4"
+                  className="text-6xl md:text-7xl font-playfair font-bold mb-4 leading-none overflow-visible text-luxury px-2"
                 >
                   {item.number}
                 </motion.div>
