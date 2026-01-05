@@ -3,7 +3,7 @@ import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 import { Award, Heart, Sparkles, Target, Calendar, MapPin, Trophy, Users } from 'lucide-react';
 import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
-import chefPortrait from '@/assets/Ishpreet Bedi.jpeg';
+import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
 
 const About = () => {
   const values = [

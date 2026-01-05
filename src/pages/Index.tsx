@@ -14,7 +14,7 @@ import { useRef, useEffect, useState } from 'react';
 import { ChefHat, CalendarDays, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import chefPortrait from '@/assets/Ishpreet Bedi.jpeg';
+import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
 import restaurantAmbience from '@/assets/Image.jpg';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
@@ -217,11 +217,11 @@ const Index = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="relative overflow-hidden rounded-lg elegant-shadow">
+              <div className="relative rounded-3xl overflow-hidden elegant-shadow">
                 <img
                   src={chefPortrait}
                   alt="Executive Chef Ishpreet Bedi"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-contain"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent" />
               </div>

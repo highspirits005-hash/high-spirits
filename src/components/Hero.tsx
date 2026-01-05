@@ -156,7 +156,7 @@ const Hero = () => {
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
             >
-             Reservations 
+             Reserve a Table 
             </Button>
           </Link>
           <Link to="/menu">

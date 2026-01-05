@@ -27,10 +27,10 @@ const Navbar = () => {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      initial={{ y: 0 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-md shadow-lg shadow-accent/20 transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50 bg-primary backdrop-blur-md shadow-lg shadow-accent/20 transition-all duration-500"
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
@@ -60,12 +60,12 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
-            <Link to="/reservations">
+            <Link to="/reserve-a-table">
               <Button
                 variant="default"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-6 gold-glow"
               >
-                Reservations
+                Reserve a Table
               </Button>
             </Link>
           </div>
@@ -100,9 +100,9 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/reservations" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link to="/reserve-a-table" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Reservations
+                  Reserve a Table
                 </Button>
               </Link>
             </div>
