@@ -84,8 +84,8 @@ const ChefPhilosophy = () => {
               Meet the Visionary
             </motion.p>
             
-            <h2 className="text-5xl md:text-6xl font-playfair font-bold text-luxury mb-6">
-              Chef's Philosophy
+            <h2 className="text-5xl md:text-6xl font-playfair font-bold text-luxury mb-6 overflow-visible px-1">
+              CHEF'S PHILOSOPHY
             </h2>
 
             <motion.div
