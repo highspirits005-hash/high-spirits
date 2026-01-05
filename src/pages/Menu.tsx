@@ -415,10 +415,6 @@ const Menu = () => {
                               </p>
                               <ShareButtons
                                 title={title}
-                                description={shortDescription}
-                                hashtags={['HighSpirits', 'IndianCuisine', 'FineFood', 'MusTry']}
-                                showLabel={true}
-                                size="sm"
                               />
                             </div>
                           </div>
