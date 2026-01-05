@@ -10,15 +10,15 @@ import heroDish2 from '@/assets/hero-dish-2.jpg';
 import heroDish3 from '@/assets/hero-dish-3.jpg';
 
 const taglines = [
-  "Buffet Starts at 5:30 P.M.",
+  "Buffet Starts at 5:30 P.M",
   "Join Us for a High-Spirited Evening",
-  "Punjabi Roots. Premium Plates.",
-  "High on Taste. High on Spirit.",
+  "Punjabi Roots. Premium Plates",
+  "High on Taste. High on Spirit",
   "Food that Carries Chadti Kala",
   "Butter Chicken Knows Your Weakness",
-  "Chadti Kala Starts After First Drink",
-  "Sip First. Decisions Later.",
-  "Table for Two? We Order for Four.",
+  "Chardi Kala Starts After First Drink",
+  "Sip First. Decisions Later",
+  "Table for Two? We Order for Four",
   "Calories Don't Count Here",
 ];
 
@@ -31,11 +31,11 @@ const TaglineCard = ({ text }: { text: string }) => {
         "hover:bg-accent/10 hover:border-accent/50 transition-all duration-300"
       )}
     >
-      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0" />
+      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0 mr-3" />
       <span className="text-xl md:text-base font-medium text-foreground whitespace-nowrap">
         {text}
       </span>
-      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0" />
+      <Star className="w-4 h-4 fill-accent text-accent flex-shrink-0 ml-3" />
     </div>
   );
 };
@@ -156,7 +156,7 @@ const Hero = () => {
               size="lg"
               className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
             >
-             Walk in 
+             Reservations 
             </Button>
           </Link>
           <Link to="/menu">

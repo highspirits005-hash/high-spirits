@@ -315,8 +315,11 @@ const Menu = () => {
       {/* Menu Section */}
       <section className="py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background to-secondary/20">
         <div className="container mx-auto px-4 md:px-6">
-          <Tabs defaultValue={menuCategories[0]?.slug || menuCategories[0]?.attributes?.slug || 'starters'} className="w-full">
+          <Tabs defaultValue="buffet" className="w-full">
             <TabsList className="flex flex-wrap justify-center gap-1 md:gap-2 mb-8 md:mb-12 bg-secondary/50 p-2 rounded-lg h-auto w-fit mx-auto">
+              <TabsTrigger value="buffet" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                Buffet
+              </TabsTrigger>
               {menuCategories.map((category: any) => {
                 const slug = category.slug || category.attributes?.slug || `category-${category.id}`;
                 const title = category.title || category.attributes?.title || 'Menu';
@@ -330,9 +333,6 @@ const Menu = () => {
                   </TabsTrigger>
                 );
               })}
-              <TabsTrigger value="buffet" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Buffet
-              </TabsTrigger>
               <TabsTrigger value="drinks" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                 Drinks
               </TabsTrigger>
@@ -404,9 +404,11 @@ const Menu = () => {
                                 <h3 className="text-lg md:text-xl lg:text-2xl font-playfair font-bold text-foreground">
                                   {title}
                                 </h3>
-                                <span className="text-xl md:text-2xl font-bold text-accent flex-shrink-0">
-                                  ${price?.toFixed(2)}
-                                </span>
+                                {!['starters', 'mains', 'breads', 'desserts', 'tasting-menus', 'tasting-menu'].includes(slug) && !slug?.toLowerCase().includes('tasting') && (
+                                  <span className="text-xl md:text-2xl font-bold text-accent flex-shrink-0">
+                                    ${price?.toFixed(2)}
+                                  </span>
+                                )}
                               </div>
                               <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-3">
                                 {shortDescription}
@@ -570,9 +572,7 @@ const Menu = () => {
                             </div>
                             
                             <div className="pt-4 md:pt-6 border-t border-accent/20">
-                              <p className="text-2xl md:text-3xl font-bold text-accent/90 group-hover:text-amber-300 transition-colors">
-                                ${drink.price.toFixed(2)}
-                              </p>
+                              {/* Price hidden for drinks section */}
                             </div>
                           </div>
                         </div>

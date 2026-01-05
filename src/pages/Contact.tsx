@@ -162,7 +162,7 @@ const Contact = () => {
                   Visit Us Today
                 </h2>
                 <p className="text-muted-foreground text-lg leading-relaxed">
-                  Whether you have questions about our menu, want to Walk inprivate event, or simply wish to share feedback, we'd love to hear from you.
+                  Whether you have questions about our menu, want to make a reservation, or simply wish to share feedback, we'd love to hear from you.
                 </p>
               </div>
 

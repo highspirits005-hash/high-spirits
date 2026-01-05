@@ -60,12 +60,12 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
-            <Link to="/walk-in">
+            <Link to="/reservations">
               <Button
                 variant="default"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-6 gold-glow"
               >
-                Walk in
+                Reservations
               </Button>
             </Link>
           </div>
@@ -100,9 +100,9 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/walk-in" onClick={() => setIsMobileMenuOpen(false)}>
+              <Link to="/reservations" onClick={() => setIsMobileMenuOpen(false)}>
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Walk in
+                  Reservations
                 </Button>
               </Link>
             </div>

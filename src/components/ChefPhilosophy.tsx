@@ -34,11 +34,11 @@ const ChefPhilosophy = () => {
               style={{ scale: imageScale }}
               className="relative"
             >
-              <div className="relative rounded-3xl overflow-hidden elegant-shadow group">
+              <div className="relative rounded-3xl overflow-hidden elegant-shadow group aspect-[3/4]">
                 <motion.img
                   src={chefPortrait}
                   alt="Executive Chef Amardeep Singh"
-                  className="w-full h-[700px] object-cover"
+                  className="w-full h-full object-cover"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.8 }}
                 />

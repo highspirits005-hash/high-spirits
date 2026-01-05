@@ -176,7 +176,7 @@ const Reservations = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl font-playfair font-bold text-luxury mb-6"
           >
-            Walk in
+            Reservations
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
