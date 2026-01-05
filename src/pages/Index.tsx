@@ -245,7 +245,7 @@ const Index = () => {
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
                 Her strong leadership and attention to detail ensure the brand runs efficiently while maintaining the highest standards of service and quality.
               </p>
-              <Link to="/our-story">
+              <Link to="/about">
                 <Button
                   size="lg"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold gold-glow"

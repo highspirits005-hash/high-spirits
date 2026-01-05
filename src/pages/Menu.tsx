@@ -468,8 +468,13 @@ const Menu = () => {
                                       <span className="w-2 h-2 bg-green-500 rounded-full"></span>
                                     </span>
                                   )}
+                                  {!item.isVeg && (
+                                    <span className="inline-flex items-center justify-center w-5 h-5 rounded border-2 border-red-500">
+                                      <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                                    </span>
+                                  )}
                                   {item.isSpicy && (
-                                    <span className="text-xs font-semibold text-red-500">🌶️</span>
+                                    <span className="text-xs font-semibold text-red-500"></span>
                                   )}
                                 </div>
                                 {item.description && (
