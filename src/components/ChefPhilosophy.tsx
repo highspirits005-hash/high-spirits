@@ -96,26 +96,15 @@ const ChefPhilosophy = () => {
               className="space-y-6 mb-8"
             >
               <p className="text-xl text-muted-foreground leading-relaxed italic">
-                "Cooking is not just about feeding the body; it's about nourishing the soul. Every dish we create 
-                is a bridge between two worlds—the ancient traditions of Punjab and the innovative spirit of Australia."
+              
               </p>
 
               <p className="text-lg text-foreground/90 leading-relaxed">
-                <span className="text-accent font-semibold">Chef Amardeep Singh</span>, our Executive Chef, brings over 20 years 
-                of culinary mastery to High Spirit. Trained in the royal kitchens of Jaipur and refined through experience 
-                at Michelin-starred restaurants across Europe, Chef Amardeep's approach is a harmonious blend of respect 
-                for heritage and fearless innovation.
+                At <span className="text-accent font-semibold">High Spirits</span>, cooking is an expression of soul and storytelling where the rich traditions of Punjab meet the modern spirit of Australia. Every plate reflects balance, emotion, and a deep respect for heritage, crafted for those who appreciate refined Indian fine dining in <span className="text-accent font-semibold">Bunbury, WA.</span>.
               </p>
 
               <p className="text-lg text-foreground/90 leading-relaxed">
-                His philosophy is simple yet profound: use the finest seasonal ingredients, honor traditional techniques, 
-                and present each dish as a work of art. Every element on the plate serves a purpose—to create balance, 
-                evoke emotion, and tell a story of cultural fusion.
-              </p>
-
-              <p className="text-lg text-foreground/90 leading-relaxed">
-                At High Spirits, we don't just serve food. We craft experiences that linger in memory, spark conversation, 
-                and celebrate the beauty of two rich culinary traditions meeting on a single plate.
+                Led by <span className="text-accent font-semibold">Amardeep Singh</span>, our Executive Chef with over 20 years of global culinary experience, the kitchen blends time-honoured techniques with contemporary finesse. Using the finest seasonal ingredients, High Spirits stands proudly as a destination restaurant & bar, redefining fine dining in Australia through flavour, warmth, and unforgettable experiences.
               </p>
             </motion.div>
 

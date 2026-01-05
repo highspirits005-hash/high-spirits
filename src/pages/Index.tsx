@@ -240,10 +240,13 @@ const Index = () => {
                 Meet Our Business Partner
               </h2>
               <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-               Ishpreet Bedi brings over 20 years of experience in hospitality operations across India and Australia. As a business partner, she leads daily operations and strategic planning, ensuring seamless management and a consistently exceptional guest experience.
+              In her role as a business partner, Ishpreet takes an active part in the operations every day and gets to know the customers personally, assuring that each and every visit is made pleasing, considerate, and unforgettable. Her presence, eye for detail, and genuine devotion to the art of making people's lives happier play an important part in creating the image of High Spirits as a classy restaurant and bar where one can enjoy the real taste of Indian fine dining in Bunbury, WA. Moreover, it helps the restaurant gain the fine dining standard in Australia through care, consistency, and warm-hearted hospitality.
               </p>
               <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-                Her strong leadership and attention to detail ensure the brand runs efficiently while maintaining the highest standards of service and quality.
+                In her role as a business partner, Ishpreet takes an active part in the operations every day and gets to know the customers personally, assuring that each and every visit is made pleasing, considerate, and unforgettable. 
+              </p>
+              <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+                Her presence, eye for detail, and genuine devotion to the art of making people's lives happier play an important part in creating the image of High Spirits as a classy restaurant and bar where one can enjoy the real taste of Indian fine dining in Bunbury, WA. Moreover, it helps the restaurant gain the fine dining standard in Australia through care, consistency, and warm-hearted hospitality.
               </p>
               <Link to="/about">
                 <Button
