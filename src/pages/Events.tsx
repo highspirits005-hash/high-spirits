@@ -4,11 +4,13 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, Sparkles, Music, Utensils, PartyPopper } from 'lucide-react';
+import { useWalkInPopup } from '@/context/WalkInPopupContext';
 import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
 
 const Events = () => {
   const [eventTypes, setEventTypes] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
+  const { openPopup } = useWalkInPopup();
 
   useEffect(() => {
     let mounted = true;
@@ -189,7 +191,7 @@ const Events = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Experience Our Events CTA Section */}
       <section className="py-24 bg-gradient-to-b from-secondary/20 to-background">
         <div className="container mx-auto px-4">
           <motion.div
@@ -197,31 +199,90 @@ const Events = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-3xl mx-auto"
+            className="max-w-4xl mx-auto"
           >
-            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-luxury mb-6">
-              Ready to Plan Your Event?
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Contact our events team to discuss your vision. We'll work with you to create a bespoke experience that exceeds expectations.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold gold-glow"
-                onClick={() => window.location.href = '/contact'}
+            {/* Decorative accent */}
+            <div className="text-center mb-12">
+              <motion.div
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="inline-block mb-6"
               >
-                Contact Events Team
+                <Sparkles className="w-12 h-12 text-accent" />
+              </motion.div>
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-playfair font-bold text-luxury mb-6 text-center">
+              Experience Our Events
+            </h2>
+            
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed text-center">
+              Ready to celebrate something special? Whether it's a corporate gathering, intimate celebration, or grand occasion, High Spirits is your perfect venue. Walk in and discover why we're the preferred choice for unforgettable events.
+            </p>
+
+            {/* Event highlights grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="glass-effect rounded-xl p-6 text-center border border-accent/20 hover:border-accent/40 transition-all duration-300"
+              >
+                <Users className="w-10 h-10 text-accent mx-auto mb-4" />
+                <h3 className="font-semibold text-foreground mb-2">Flexible Capacity</h3>
+                <p className="text-sm text-muted-foreground">From intimate gatherings to grand celebrations</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="glass-effect rounded-xl p-6 text-center border border-accent/20 hover:border-accent/40 transition-all duration-300"
+              >
+                <Utensils className="w-10 h-10 text-accent mx-auto mb-4" />
+                <h3 className="font-semibold text-foreground mb-2">Exquisite Cuisine</h3>
+                <p className="text-sm text-muted-foreground">Authentic Punjabi & North Indian delicacies</p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="glass-effect rounded-xl p-6 text-center border border-accent/20 hover:border-accent/40 transition-all duration-300"
+              >
+                <Music className="w-10 h-10 text-accent mx-auto mb-4" />
+                <h3 className="font-semibold text-foreground mb-2">Premium Ambience</h3>
+                <p className="text-sm text-muted-foreground">Luxury setting for your special moments</p>
+              </motion.div>
+            </div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Button
+                onClick={() => openPopup()}
+                size="lg"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
+              >
+                Walk-In Enquiry
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground font-semibold"
-                onClick={() => window.location.href = 'tel:+61234567890'}
+                className="border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground font-semibold text-lg px-8 py-6"
+                onClick={() => window.location.href = '/contact'}
               >
-                Call +61 2 3456 7890
+                Get in Touch
               </Button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>

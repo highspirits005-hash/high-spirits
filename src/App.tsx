@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import WalkInPopup from "./components/WalkInPopup";
+import { WalkInPopupProvider, useWalkInPopup } from "./context/WalkInPopupContext";
 
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -18,16 +20,13 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+const AppContent = () => {
+  const { isOpen, closePopup } = useWalkInPopup();
 
+  return (
+    <>
       <BrowserRouter>
-        {/* ✅ SCROLL TO TOP FIX */}
         <ScrollToTop />
-
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
@@ -41,7 +40,19 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <WalkInPopup isOpen={isOpen} onClose={closePopup} />
+    </>
+  );
+};
 
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <WalkInPopupProvider>
+        <AppContent />
+      </WalkInPopupProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

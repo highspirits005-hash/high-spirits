@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
+import { useWalkInPopup } from '@/context/WalkInPopupContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openPopup } = useWalkInPopup();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,14 +62,12 @@ const Navbar = () => {
                 </Link>
               </motion.div>
             ))}
-            <Link to="/reserve-a-table">
-              <Button
-                variant="default"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-6 gold-glow"
-              >
-                Reserve a Table
-              </Button>
-            </Link>
+            <Button
+              onClick={() => openPopup()}
+              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold px-6 gold-glow"
+            >
+              Walk-In
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -100,11 +100,12 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
-              <Link to="/reserve-a-table" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
-                  Reserve a Table
-                </Button>
-              </Link>
+              <Button onClick={() => {
+                openPopup();
+                setIsMobileMenuOpen(false);
+              }} className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+                Walk-In
+              </Button>
             </div>
           </motion.div>
         )}

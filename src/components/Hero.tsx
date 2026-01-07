@@ -5,6 +5,7 @@ import { ChevronDown, Star } from 'lucide-react';
 import VideoBackground from './VideoBackground';
 import { Marquee } from './ui/marquee';
 import { cn } from '@/lib/utils';
+import { useWalkInPopup } from '@/context/WalkInPopupContext';
 import heroDish1 from '@/assets/hero-dish-1.jpg';
 import heroDish2 from '@/assets/hero-dish-2.jpg';
 import heroDish3 from '@/assets/hero-dish-3.jpg';
@@ -41,6 +42,8 @@ const TaglineCard = ({ text }: { text: string }) => {
 };
 
 const Hero = () => {
+  const { openPopup } = useWalkInPopup();
+
   return (
     <section className="relative h-screen pt-20 md:pt-24 lg:pt-28 flex items-center justify-center overflow-hidden">
       <VideoBackground />
@@ -151,14 +154,13 @@ const Hero = () => {
           transition={{ delay: 1.2 }}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center"
         >
-          <Link to="/walk-in">
-            <Button
-              size="lg"
-              className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
-            >
-             Reserve a Table 
-            </Button>
-          </Link>
+          <Button
+            onClick={() => openPopup()}
+            size="lg"
+            className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-lg px-8 py-6 gold-glow"
+          >
+            Walk-In
+          </Button>
           <Link to="/menu">
             <Button
               size="lg"
