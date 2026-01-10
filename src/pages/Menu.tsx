@@ -59,32 +59,6 @@ interface MenuCategory {
   };
 }
 
-interface DrinkItem {
-  id: number;
-  documentId: string;
-  name: string;
-  price: number;
-  description: string | null;
-  order: number;
-  isAlcoholic: boolean | null;
-  drink_category: {
-    id: number;
-    documentId: string;
-    title: string;
-    slug: string;
-    order: number;
-  } | null;
-}
-
-interface DrinkCategory {
-  id: number;
-  documentId: string;
-  title: string;
-  slug: string;
-  order: number;
-  drink_items: DrinkItem[];
-}
-
 interface BuffetItem {
   id: number;
   name: string;
@@ -104,9 +78,7 @@ interface BuffetCategory {
 
 const Menu = () => {
   const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
-  const [drinkCategories, setDrinkCategories] = useState<DrinkCategory[]>([]);
   const [buffetCategories, setBuffetCategories] = useState<BuffetCategory[]>([]);
-  const [selectedDrinkCategory, setSelectedDrinkCategory] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
   const [buffetLoading, setBuffetLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -173,70 +145,6 @@ const Menu = () => {
     };
 
     fetchMenuItems();
-  }, []);
-
-  // Fetch drink items and group by category
-  useEffect(() => {
-    const fetchDrinkItems = async () => {
-      try {
-        const apiUrl = new URL('https://calm-actor-864a39d720.strapiapp.com/api/drink-items');
-        
-        apiUrl.searchParams.append('filters[isActive][$eq]', 'true');
-        apiUrl.searchParams.append('fields[0]', 'name');
-        apiUrl.searchParams.append('fields[1]', 'price');
-        apiUrl.searchParams.append('fields[2]', 'description');
-        apiUrl.searchParams.append('fields[3]', 'order');
-        apiUrl.searchParams.append('fields[4]', 'isAlcoholic');
-        apiUrl.searchParams.append('sort', 'order:asc');
-        apiUrl.searchParams.append('populate[drink_category][fields][0]', 'title');
-        apiUrl.searchParams.append('populate[drink_category][fields][1]', 'slug');
-        apiUrl.searchParams.append('populate[drink_category][fields][2]', 'order');
-        apiUrl.searchParams.append('populate[drink_category][filters][isActive][$eq]', 'true');
-
-        const itemsRes = await fetch(apiUrl.toString());
-
-        if (!itemsRes.ok) {
-          throw new Error('Failed to fetch drink items');
-        }
-
-        const itemsData = await itemsRes.json();
-        const items = (itemsData.data || []) as DrinkItem[];
-
-        const categoryMap = new Map<string, DrinkCategory>();
-        
-        items.forEach((item) => {
-          if (item.drink_category) {
-            const categorySlug = item.drink_category.slug;
-            if (!categoryMap.has(categorySlug)) {
-              categoryMap.set(categorySlug, {
-                id: item.drink_category.id,
-                documentId: item.drink_category.documentId || '',
-                title: item.drink_category.title,
-                slug: categorySlug,
-                order: item.drink_category.order,
-                drink_items: [],
-              });
-            }
-            const category = categoryMap.get(categorySlug)!;
-            category.drink_items.push(item);
-          }
-        });
-
-        const sortedCategories = Array.from(categoryMap.values()).sort(
-          (a, b) => a.order - b.order
-        );
-
-        setDrinkCategories(sortedCategories);
-
-        if (sortedCategories.length > 0) {
-          setSelectedDrinkCategory(sortedCategories[0].slug);
-        }
-      } catch (error) {
-        console.error('Error fetching drink items:', error);
-      }
-    };
-
-    fetchDrinkItems();
   }, []);
 
   // Fetch buffet categories
@@ -333,9 +241,6 @@ const Menu = () => {
                   </TabsTrigger>
                 );
               })}
-              <TabsTrigger value="drinks" className="text-xs sm:text-sm md:text-base whitespace-nowrap data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                Drinks
-              </TabsTrigger>
             </TabsList>
 
             {/* Menu Categories Tabs */}
@@ -472,7 +377,7 @@ const Menu = () => {
                                     </span>
                                   )}
                                   {item.isSpicy && (
-                                    <span className="text-xs font-semibold text-red-500"></span>
+                                    <span className="text-xs font-semibold text-red-500">🌶️</span>
                                   )}
                                 </div>
                                 {item.description && (
@@ -499,88 +404,6 @@ const Menu = () => {
                   </div>
                 </motion.div>
               )}
-            </TabsContent>
-
-            {/* Drinks Tab */}
-            <TabsContent value="drinks" className="space-y-8 md:space-y-12">
-              <div className="text-center mb-8 md:mb-12">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-accent mb-3">Our Curated Selection</h2>
-                <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">Discover our handpicked collection of drinks, from refreshing beverages to premium spirits</p>
-              </div>
-
-              <div className="flex flex-wrap gap-2 md:gap-3 lg:gap-4 justify-center">
-                {drinkCategories.map((category, idx) => (
-                  <motion.button
-                    key={category.id}
-                    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ delay: idx * 0.08 }}
-                    whileHover={{ scale: 1.08, y: -5 }}
-                    onClick={() => setSelectedDrinkCategory(category.slug)}
-                    className={`px-4 md:px-7 lg:px-10 py-3 md:py-4 rounded-full font-bold transition-all duration-300 text-xs md:text-sm lg:text-base uppercase tracking-widest relative overflow-hidden group ${
-                      selectedDrinkCategory === category.slug
-                        ? 'bg-accent text-primary gold-glow shadow-xl shadow-accent/60'
-                        : 'border-2 md:border-3 border-accent text-accent hover:bg-accent/10 backdrop-blur-sm'
-                    }`}
-                  >
-                    <span className="relative z-10">{category.title}</span>
-                  </motion.button>
-                ))}
-              </div>
-
-              <div className="space-y-4 md:space-y-5 lg:space-y-6">
-                {(() => {
-                  const selectedCategory = drinkCategories.find(
-                    (cat) => cat.slug === selectedDrinkCategory
-                  );
-                  const drinks = selectedCategory?.drink_items || [];
-
-                  return drinks.length > 0 ? (
-                    drinks.map((drink: any, index: number) => (
-                      <motion.div
-                        key={drink.id}
-                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        transition={{ duration: 0.4, delay: index * 0.06 }}
-                        whileHover={{ y: -8, boxShadow: "0 20px 40px rgba(212, 175, 55, 0.2)" }}
-                        className="group relative glass-effect rounded-xl md:rounded-2xl p-5 md:p-8 lg:p-10 hover:scale-[1.02] md:hover:scale-[1.03] transition-all duration-400 border-2 border-accent/40 hover:border-accent/80 backdrop-blur-lg overflow-hidden"
-                      >
-                        <div className="flex flex-col gap-5 md:gap-7 relative z-10">
-                          <div className="flex-1">
-                            <div className="flex items-start justify-between mb-3 md:mb-5 gap-3">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-2">
-                                  <h3 className="text-lg md:text-2xl lg:text-3xl font-playfair font-bold text-accent group-hover:text-amber-300 transition-colors duration-300">
-                                    {drink.name}
-                                  </h3>
-                                  {drink.isAlcoholic && (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/20 text-accent border border-accent/40">
-                                      Alcoholic
-                                    </span>
-                                  )}
-                                </div>
-                                {drink.description && (
-                                  <p className="text-xs md:text-sm text-muted-foreground/90 leading-relaxed group-hover:text-muted-foreground transition-colors">
-                                    {drink.description}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <div className="pt-4 md:pt-6 border-t border-accent/20">
-                              {/* Price hidden for drinks section */}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <div className="text-center py-12">
-                      <p className="text-muted-foreground text-lg">No drinks available in this category</p>
-                    </div>
-                  );
-                })()}
-              </div>
             </TabsContent>
           </Tabs>
 
