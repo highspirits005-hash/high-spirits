@@ -83,6 +83,16 @@ const Menu = () => {
   const [buffetLoading, setBuffetLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    document.title = 'High Spirits Menu | Indian Buffet & Fine Dining Bunbury';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Explore the High Spirits menu featuring an Indian buffet and fine dining dishes, with vegetarian and non-vegetarian mains crafted for refined tastes.');
+    }
+  }, []);
+
   // Fetch menu items directly and group by category
   useEffect(() => {
     const fetchMenuItems = async () => {

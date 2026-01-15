@@ -14,6 +14,16 @@ const Gallery = () => {
   const imagesPerPage = 12; // 4x3 grid, adjust as needed
 
   useEffect(() => {
+    document.title = 'Events & Indian Buffet Dining in Bunbury | High Spirits';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'See photos from High Spirits capturing Indian buffet dining, refined spaces and happy customers enjoying thoughtful hospitality.');
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchGalleryImages = async () => {
       try {
         setIsLoading(true);

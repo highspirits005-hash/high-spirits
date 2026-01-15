@@ -13,6 +13,16 @@ const Events = () => {
   const { openPopup } = useWalkInPopup();
 
   useEffect(() => {
+    document.title = 'Private Events & Indian Buffet Dining | High Spirits';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Plan private events at High Spirits in Bunbury, offering Indian buffet dining, elegant ambience and carefully curated dining experiences.');
+    }
+  }, []);
+
+  useEffect(() => {
     let mounted = true;
     const fetchEvents = async () => {
       setLoading(true);

@@ -4,8 +4,18 @@ import { motion } from 'framer-motion';
 import { Award, Heart, Sparkles, Target, Calendar, MapPin, Trophy, Users } from 'lucide-react';
 import restaurantAmbience from '@/assets/restaurant-ambience.jpg';
 import chefPortrait from '@/assets/Ishpreet Bedi.jpg';
+import { useEffect } from 'react';
 
 const About = () => {
+  useEffect(() => {
+    document.title = 'About High Spirits | Indian Buffet & Dining in Bunbury';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Learn about High Spirits, a Bunbury Indian dining destination known for its curated buffet, refined flavours and welcoming hospitality.');
+    }
+  }, []);
   const values = [
     {
       icon: Heart,

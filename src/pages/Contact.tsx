@@ -8,9 +8,19 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Contact = () => {
+  useEffect(() => {
+    document.title = 'Contact Us | Indian Buffet Restaurant in Bunbury';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Contact High Spirits in Bunbury to book a table, enquire about events, or learn more about our Indian buffet dining experience.');
+    }
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',

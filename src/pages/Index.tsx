@@ -24,6 +24,16 @@ import palakPaneer from '@/assets/dish-palak-paneer.jpg';
 import roganJosh from '@/assets/dish-rogan-josh.jpg';
 
 const Index = () => {
+  useEffect(() => {
+    document.title = 'High Spirits | Premium Indian Buffet Restaurant in Bunbury';
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'High Spirits is a classy Indian restaurant in Bunbury, offering a curated Indian buffet with vegetarian and non-vegetarian meals in a premium setting.');
+    }
+  }, []);
+
   const statsRef = useRef(null);
   const chefRef = useRef(null);
   const ambienceRef = useRef(null);
