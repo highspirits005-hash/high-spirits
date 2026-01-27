@@ -54,7 +54,7 @@ const Gallery = () => {
         
         setImages(sortedImages);
         setCategories(uniqueCategories);
-        setSelectedCategory(null); // Show all images by default
+        setSelectedCategory(uniqueCategories[0] || null); // Select first category by default
         setError(null);
       } catch (err) {
         console.error('Error fetching gallery images:', err);
@@ -131,26 +131,13 @@ const Gallery = () => {
           {/* Category Filter */}
           {categories.length > 0 && (
             <div className="flex flex-wrap justify-center gap-3 mb-12">
-              <motion.button
-                onClick={() => handleCategoryChange(null)}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className={`px-6 py-2 rounded-full font-semibold uppercase text-sm tracking-widest transition-all duration-300 ${
-                  selectedCategory === null
-                    ? 'bg-accent text-accent-foreground gold-glow'
-                    : 'border-2 border-accent text-accent hover:bg-accent/10'
-                }`}
-              >
-                All
-              </motion.button>
               {categories.map((category, idx) => (
                 <motion.button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: (idx + 1) * 0.1 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
                   className={`px-6 py-2 rounded-full font-semibold uppercase text-sm tracking-widest transition-all duration-300 ${
                     selectedCategory === category
                       ? 'bg-accent text-accent-foreground gold-glow'
