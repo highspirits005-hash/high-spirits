@@ -8,7 +8,6 @@ import WalkInPopup from "./components/WalkInPopup";
 import { WalkInPopupProvider, useWalkInPopup } from "./context/WalkInPopupContext";
 import { CartProvider } from "./context/CartContext";
 import Cart from "./components/Cart";
-import CustomerChoicePopup from "./components/CustomerChoicePopup";
 
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -44,7 +43,6 @@ const AppContent = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
         <WalkInPopup isOpen={isOpen} onClose={closePopup} />
-        <CustomerChoicePopup />
         <Cart />
       </BrowserRouter>
   );
