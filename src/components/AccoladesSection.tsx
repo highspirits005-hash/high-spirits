@@ -42,6 +42,19 @@ const AccoladesSection = () => {
     {
       type: 'svg',
       svgIcon: (
+        <svg viewBox="0 0 62 60" className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 group-hover:scale-110 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg">
+          <path d="M61.5 22.4H38L30.8 0l-7.3 22.4L0 22.3l19 13.8-7.3 22.3 19-13.8 19 13.8-7.3-22.3 19.1-13.7z" fill="#00b67a"/>
+          <path d="M44.2 41.2l-1.6-5.1-11.8 8.5 13.4-3.4z" fill="#005128"/>
+        </svg>
+      ),
+      value: 'Trustpilot',
+      label: 'Read Guest Reviews',
+      link: 'https://www.trustpilot.com/review/highspirits.au',
+      bgGlow: 'from-[#00b67a]/20 to-accent/5',
+    },
+    {
+      type: 'svg',
+      svgIcon: (
         <svg viewBox="0 0 24 24" className="w-6 sm:w-7 md:w-8 h-6 sm:h-7 md:h-8 text-blue-400 group-hover:scale-110 transition-transform duration-300" fill="currentColor">
           <path d="M12.24 10.285V14.4h6.887c-.648 2.428-2.519 4.114-5.137 4.114-3.478 0-6.3-2.822-6.3-6.3s2.822-6.3 6.3-6.3c1.637 0 3.125.626 4.256 1.646L21.3 4.675C19.034 2.554 15.937 1.2 12.24 1.2 6.2 1.2 1.2 6.2 1.2 12.24s5 11.04 11.04 11.04c6.31 0 11.04-4.44 11.04-11.04 0-.744-.06-1.464-.18-2.155H12.24z"/>
         </svg>
@@ -79,8 +92,8 @@ const AccoladesSection = () => {
           </p>
         </motion.div>
 
-        {/* 4-Column Grid matching Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        {/* 5-Column Grid matching Stats Section style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {items.map((item, index) => (
             <motion.div
               key={index}
