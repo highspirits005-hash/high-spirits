@@ -8,7 +8,6 @@ import IngredientsShowcase from '@/components/IngredientsShowcase';
 import AmbienceTour from '@/components/AmbienceTour';
 import ChefPhilosophy from '@/components/ChefPhilosophy';
 import MenuStory from '@/components/MenuStory';
-import AwardSection from '@/components/AwardSection';
 import Carousel3D from '@/components/Carousel3D';
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
@@ -171,8 +170,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Award Recognition Section */}
-      <AwardSection />
+
 
       <DishGrid />
       
