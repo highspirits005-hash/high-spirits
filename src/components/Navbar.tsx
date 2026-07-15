@@ -6,7 +6,6 @@ import { Button } from './ui/button';
 import { useWalkInPopup } from '@/context/WalkInPopupContext';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart } from 'lucide-react';
-import AnnouncementBar from './AnnouncementBar';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,19 +38,6 @@ const Navbar = () => {
       transition={{ duration: 0.6 }}
       className="fixed top-0 left-0 right-0 z-50 bg-primary backdrop-blur-md shadow-lg shadow-accent/20 transition-all duration-500"
     >
-      <AnimatePresence initial={false}>
-        {!isScrolled && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <AnnouncementBar />
-          </motion.div>
-        )}
-      </AnimatePresence>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
