@@ -5,12 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import WalkInPopup from "./components/WalkInPopup";
-import ClosureNoticePopup from "./components/ClosureNoticePopup";
-import ClosureNoticeBanner from "./components/ClosureNoticeBanner";
 import { WalkInPopupProvider, useWalkInPopup } from "./context/WalkInPopupContext";
 import { CartProvider } from "./context/CartContext";
 import Cart from "./components/Cart";
-import { useState } from "react";
 
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -28,12 +25,10 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const { isOpen, closePopup } = useWalkInPopup();
-  const [showClosureModal, setShowClosureModal] = useState(false);
 
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <ClosureNoticeBanner onOpenModal={() => setShowClosureModal(true)} />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
@@ -48,7 +43,6 @@ const AppContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <WalkInPopup isOpen={isOpen} onClose={closePopup} />
-      <ClosureNoticePopup isOpen={showClosureModal ? true : undefined} onClose={() => setShowClosureModal(false)} />
       <Cart />
     </BrowserRouter>
   );
