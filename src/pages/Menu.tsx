@@ -13,6 +13,10 @@ import MenuCard from '@/components/MenuUI/MenuCard';
 import CartDrawer from '@/components/MenuUI/CartDrawer';
 import SearchBar from '@/components/MenuUI/SearchBar';
 import MenuSidebar from '@/components/MenuUI/MenuSidebar';
+import BuffetSection from '@/components/MenuUI/BuffetSection';
+import type { BuffetCategory } from '@/components/MenuUI/BuffetSection';
+
+const BUFFET_API_BASE = 'https://admin.highspirits.au';
 
 
 interface StrapiImage {
@@ -66,22 +70,6 @@ interface MenuCategory {
   };
 }
 
-interface BuffetItem {
-  id: number;
-  name: string;
-  description: string | null;
-  isVeg: boolean | null;
-  isSpicy: boolean | null;
-  order: number;
-}
-
-interface BuffetCategory {
-  id: number;
-  title: string;
-  order: number;
-  price: number;
-  buffet_items: BuffetItem[];
-}
 
 const Menu = () => {
   const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
@@ -228,50 +216,64 @@ const Menu = () => {
     fetchMenuItems();
   }, []);
 
-  // Fetch buffet categories
+  // Fetch the buffet from the CMS: categories carry the price + item relation,
+  // /buffet-items carries the full item fields used to fill in partial relations.
   useEffect(() => {
-    if (USE_LOCAL_MENU && LOCAL_MENU?.menuCategories) {
-      setBuffetCategories(LOCAL_MENU.buffetCategories || []);
+    if (USE_LOCAL_MENU && LOCAL_MENU?.buffetCategories?.length) {
+      setBuffetCategories(LOCAL_MENU.buffetCategories as BuffetCategory[]);
       setBuffetLoading(false);
       return;
     }
 
-    const fetchBuffetCategories = async () => {
+    const fetchBuffet = async () => {
       try {
         setBuffetLoading(true);
-        
-        const apiUrl = new URL('https://calm-actor-864a39d720.strapiapp.com/api/buffet-categories');
-        
-        apiUrl.searchParams.append('fields[0]', 'title');
-        apiUrl.searchParams.append('fields[1]', 'price');
-        apiUrl.searchParams.append('fields[2]', 'order');
-        apiUrl.searchParams.append('sort', 'order:asc');
-        
-        apiUrl.searchParams.append('populate[buffet_items][fields][0]', 'name');
-        apiUrl.searchParams.append('populate[buffet_items][fields][1]', 'description');
-        apiUrl.searchParams.append('populate[buffet_items][fields][2]', 'isVeg');
-        apiUrl.searchParams.append('populate[buffet_items][fields][3]', 'isSpicy');
-        apiUrl.searchParams.append('populate[buffet_items][sort]', 'order:asc');
-        apiUrl.searchParams.append('pagination[pageSize]', '100');
 
-        const buffetRes = await fetch(apiUrl.toString());
+        const categoriesUrl = new URL(`${BUFFET_API_BASE}/api/buffet-categories`);
+        categoriesUrl.searchParams.append('sort', 'order:asc');
+        categoriesUrl.searchParams.append('populate[buffet_items][sort]', 'order:asc');
+        categoriesUrl.searchParams.append('pagination[pageSize]', '100');
 
-        if (!buffetRes.ok) {
-          throw new Error('Failed to fetch buffet categories');
+        const itemsUrl = new URL(`${BUFFET_API_BASE}/api/buffet-items`);
+        itemsUrl.searchParams.append('sort', 'order:asc');
+        itemsUrl.searchParams.append('pagination[pageSize]', '100');
+
+        const [categoriesRes, itemsRes] = await Promise.all([
+          fetch(categoriesUrl.toString()),
+          fetch(itemsUrl.toString()),
+        ]);
+
+        if (!categoriesRes.ok) {
+          throw new Error(`Buffet API error: ${categoriesRes.status} ${categoriesRes.statusText}`);
         }
 
-        const buffetData = await buffetRes.json();
-        const categories = (buffetData.data || []) as BuffetCategory[];
+        const categoriesData = await categoriesRes.json();
+        const itemsData = itemsRes.ok ? await itemsRes.json() : { data: [] };
+
+        const itemsById = new Map<number, any>(
+          ((itemsData.data || []) as any[]).map((item) => [item.id, item])
+        );
+
+        const categories = ((categoriesData.data || []) as any[])
+          .map((category) => ({
+            ...category,
+            buffet_items: (category.buffet_items || [])
+              .map((item: any) => ({ ...(itemsById.get(item.id) || {}), ...item }))
+              .sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0)),
+          }))
+          .filter((category) => (category.buffet_items || []).length > 0)
+          .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)) as BuffetCategory[];
 
         setBuffetCategories(categories);
       } catch (error) {
         console.error('Error fetching buffet categories:', error);
+        setBuffetCategories([]);
       } finally {
         setBuffetLoading(false);
       }
     };
 
-    fetchBuffetCategories();
+    fetchBuffet();
   }, []);
 
   return (
@@ -314,7 +316,7 @@ const Menu = () => {
           <SearchBar query={searchQuery} onQuery={setSearchQuery} />
 
           <div className="flex items-center justify-between gap-3">
-            <CategoryTabs categories={menuCategories} active={activeTab} onChange={(s) => setActiveTab(s)} />
+            <CategoryTabs categories={menuCategories} active={activeTab} onChange={(s) => setActiveTab(s)} showBuffet={buffetLoading || buffetCategories.length > 0} />
             <button
               onClick={() => setSidebarOpen(true)}
               className="ml-2 px-3 py-2 rounded-full bg-card/70 border border-border text-muted-foreground hidden sm:inline-flex items-center gap-2"
@@ -328,7 +330,11 @@ const Menu = () => {
           {/* No veg/non-veg filters — show 'All' by default; mobile shows one category */}
 
           <div className="space-y-4 md:space-y-6 lg:space-y-8 mt-4">
-            {isLoading ? (
+            {(activeTab === 'all' || activeTab === 'buffet') && (
+              <BuffetSection categories={buffetCategories} loading={buffetLoading} query={searchQuery} />
+            )}
+
+            {activeTab === 'buffet' ? null : isLoading ? (
               <MenuItemSkeleton count={6} />
             ) : activeTab === 'menu' ? (
               <div className="space-y-3">

@@ -7,7 +7,8 @@ const CategoryTabs: React.FC<{
   categories: Category[];
   active: string;
   onChange: (slug: string) => void;
-}> = ({ categories, active, onChange }) => {
+  showBuffet?: boolean;
+}> = ({ categories, active, onChange, showBuffet = false }) => {
   const [isMobile, setIsMobile] = React.useState<boolean>(false);
 
   React.useEffect(() => {
@@ -34,6 +35,17 @@ const CategoryTabs: React.FC<{
           >
             All
           </button>
+
+          {showBuffet && (
+            <button
+              onClick={() => onChange('buffet')}
+              className={`whitespace-nowrap px-4 py-2 rounded-full transition-all duration-200 font-semibold text-sm ${
+                active === 'buffet' ? 'bg-accent text-accent-foreground shadow-md scale-105' : 'bg-secondary/20 text-muted-foreground'
+              }`}
+            >
+              Buffet
+            </button>
+          )}
 
           {!isMobile && categories
             .filter((cat) => {
