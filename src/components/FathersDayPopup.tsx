@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, MapPin, Heart, UtensilsCrossed, Sparkles } from 'lucide-react';
+import { X, MapPin, Heart, Phone, UtensilsCrossed } from 'lucide-react';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
 import { useWalkInPopup } from '@/context/WalkInPopupContext';
+import fathersDayPhoto from '@/assets/fathers-day-image.jpg';
 
 interface FathersDayPopupProps {
   isOpen?: boolean;
@@ -69,130 +70,150 @@ const FathersDayPopup: React.FC<FathersDayPopupProps> = ({ isOpen: externalIsOpe
             onClick={handleClose}
           />
 
-          {/* Card */}
+          {/* Card — full-bleed photo poster, styled like a restaurant promo post */}
           <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 24 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 26, stiffness: 300 }}
-            className="relative w-full max-w-[360px] sm:max-w-[400px] mt-2 mb-4 sm:my-10 rounded-3xl shadow-2xl overflow-hidden border"
-            style={{
-              borderColor: `${colors.gold}30`,
-              background: `linear-gradient(150deg, ${colors.cardDark} 0%, ${colors.dark} 100%)`,
-            }}
+            className="relative w-full max-w-[360px] sm:max-w-[400px] mt-2 mb-4 sm:my-8 rounded-[28px] shadow-2xl overflow-hidden border"
+            style={{ borderColor: `${colors.gold}40` }}
           >
-            {/* Top glowing accent line */}
-            <div className="h-1.5 w-full bg-gradient-to-r from-transparent via-[#FBBF24] to-transparent shadow-[0_0_15px_#FBBF24]" />
-
-            {/* Ambient glows */}
-            <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: `${colors.emerald}40` }} />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: `${colors.gold}12` }} />
-
             {/* Close button */}
             <button
               onClick={handleClose}
               aria-label="Close popup"
-              className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 z-20 group"
+              className="absolute top-3 right-3 p-1.5 text-white bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full transition-all duration-300 z-30 group"
             >
               <X className="w-[18px] h-[18px] group-hover:rotate-90 transition-transform duration-300" />
             </button>
 
-            {/* Content */}
-            <div className="relative z-10 px-5 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6 text-center">
-              {/* Badge */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.15, type: 'spring', stiffness: 300 }}
-                className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border shadow-lg mb-2.5"
-                style={{
-                  background: `linear-gradient(135deg, ${colors.emerald} 0%, ${colors.emeraldDark} 100%)`,
-                  borderColor: `${colors.gold}40`,
-                  color: colors.gold,
-                }}
-              >
-                <Heart className="w-6 h-6 sm:w-7 sm:h-7" fill="currentColor" />
-              </motion.div>
-
-              {/* Eyebrow */}
-              <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest mb-1.5" style={{ color: colors.gold }}>
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>This Father&rsquo;s Day</span>
-                <Sparkles className="w-3.5 h-3.5" />
-              </div>
-
-              {/* Title */}
-              <h2 className="text-2xl leading-tight sm:text-[1.75rem] font-playfair font-bold text-white mb-2.5 tracking-wide">
-                Give Dad a{' '}
-                <span
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.goldLight} 0%, ${colors.gold} 100%)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Feast to Remember
-                </span>
-              </h2>
-
-              {/* Description */}
-              <p className="text-gray-300 text-sm leading-relaxed mb-4 font-inter px-1">
-                Treat Dad to a table full of his favourites and bring the whole family together for good food and great conversation.
-              </p>
-
-              {/* Info */}
-              <div className="rounded-xl p-3.5 mb-4 text-left space-y-2" style={{ background: `${colors.emerald}18`, border: `1px solid ${colors.emerald}40` }}>
-                <div className="flex items-center gap-2.5 text-sm text-gray-200">
-                  <Calendar size={16} style={{ color: colors.gold }} className="flex-shrink-0" />
-                  <span>Sunday, <strong className="text-white">6th September</strong></span>
-                </div>
-                <div className="flex items-center gap-2.5 text-sm text-gray-200">
-                  <Clock size={16} style={{ color: colors.gold }} className="flex-shrink-0" />
-                  <span><strong className="text-white">11:30 AM — 9:30 PM</strong></span>
-                </div>
-                <div className="flex items-center gap-2.5 text-sm text-gray-200">
-                  <MapPin size={16} style={{ color: colors.gold }} className="flex-shrink-0" />
-                  <span className="truncate">1/57 Victoria St, <strong className="text-white">Bunbury</strong></span>
-                </div>
-              </div>
-
-              {/* Quote highlight */}
+            {/* Poster photo background — height is intrinsic to its content, so the footer always sits flush at the very bottom */}
+            <div className="relative w-full">
+              <img
+                src={fathersDayPhoto}
+                alt="Father and son sharing a meal at High Spirits"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectPosition: '50% 35%' }}
+              />
+              {/* Darkening gradient — dark only where text sits, fully clear across the open photo in the middle */}
               <div
-                className="rounded-xl px-4 py-3 mb-4 text-sm font-playfair italic"
-                style={{
-                  background: `${colors.gold}12`,
-                  border: `1px solid ${colors.gold}30`,
-                  color: colors.goldLight,
-                }}
-              >
-                Because Dad deserves more than just &ldquo;Happy Father&rsquo;s Day.&rdquo; He deserves a feast!
-              </div>
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.3) 24%, rgba(0,0,0,0) 34%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.5) 82%, rgba(0,0,0,0.78) 100%)' }}
+              />
+              {/* Soft corner vignette for a more cinematic, editorial finish */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{ boxShadow: 'inset 0 0 90px 20px rgba(0,0,0,0.35)' }}
+              />
 
-              {/* CTA Buttons */}
-              <div className="space-y-2.5">
-                <Button
-                  onClick={handleReserve}
-                  className="w-full font-bold py-3 rounded-xl shadow-lg transition-all duration-300 text-sm tracking-wide flex items-center justify-center gap-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${colors.gold} 0%, #f59e0b 100%)`,
-                    color: colors.dark,
-                    boxShadow: `0 8px 20px ${colors.gold}40`,
-                  }}
+              {/* Content layer */}
+              <div className="relative z-10 flex flex-col">
+                {/* Top: logo + bold headline + date, all grouped so the photo opens up below */}
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15, duration: 0.5 }}
+                  className="pt-5 px-5 flex flex-col items-center text-center"
                 >
-                  <UtensilsCrossed className="w-4 h-4" />
-                  Reserve Dad&rsquo;s Table
-                </Button>
-
-                <Link to="/menu" onClick={handleClose} className="block">
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-xl py-3 text-sm font-semibold tracking-wide border-2 bg-transparent hover:bg-white/5"
-                    style={{ borderColor: `${colors.gold}50`, color: colors.goldLight }}
+                  <img src="/logo1.png" alt="High Spirits" className="h-8 w-auto mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+                  <h2
+                    className="font-playfair font-extrabold uppercase text-white leading-[0.9] text-[1.9rem] sm:text-[2.1rem]"
+                    style={{ textShadow: '0 4px 18px rgba(0,0,0,0.7)' }}
                   >
-                    View Menu
-                  </Button>
-                </Link>
+                    Celebrating
+                  </h2>
+                  <span
+                    className="font-playfair italic font-bold text-[2.6rem] sm:text-[2.9rem] leading-none -mt-1.5"
+                    style={{
+                      background: `linear-gradient(135deg, ${colors.goldLight} 0%, ${colors.gold} 100%)`,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.55))',
+                    }}
+                  >
+                    Father's Day
+                  </span>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="h-px w-5" style={{ background: `${colors.gold}80` }} />
+                    <span
+                      className="text-[11px] font-semibold tracking-[0.08em] text-gray-100"
+                      style={{ textShadow: '0 2px 6px rgba(0,0,0,0.8)' }}
+                    >
+                      Sunday, 6th September &bull; 11:30AM&ndash;9:30PM
+                    </span>
+                    <span className="h-px w-5" style={{ background: `${colors.gold}80` }} />
+                  </div>
+                </motion.div>
+
+                {/* Middle: left fully open so the photo does the talking */}
+                <div className="h-[180px] sm:h-[205px]" />
+
+                {/* Bottom: booking pill, address, CTAs — anchored flush to the bottom edge of the poster */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="px-5 pb-5 pt-4"
+                  style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0.35) 100%)' }}
+                >
+                  <motion.a
+                    href="tel:+61420408809"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center justify-center gap-2 bg-white rounded-2xl py-2.5 px-4 mb-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.35)] ring-1 transition-colors"
+                    style={{ boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 0 1px ${colors.gold}30` }}
+                  >
+                    <Phone size={14} style={{ color: colors.emerald }} className="flex-shrink-0" />
+                    <span className="text-[12.5px] font-bold tracking-wide" style={{ color: colors.dark }}>
+                      Book your table &nbsp;&bull;&nbsp; +61 420 408 809
+                    </span>
+                  </motion.a>
+
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="h-px flex-1" style={{ background: `linear-gradient(90deg, transparent, ${colors.gold}80)` }} />
+                    <Heart size={10} style={{ color: colors.gold }} fill={colors.gold} />
+                    <span className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${colors.gold}80, transparent)` }} />
+                  </div>
+
+                  <div
+                    className="flex items-center justify-center gap-1.5 text-[11.5px] text-gray-100 mb-4"
+                    style={{ textShadow: '0 1px 6px rgba(0,0,0,0.85)' }}
+                  >
+                    <MapPin size={12} style={{ color: colors.gold }} className="flex-shrink-0" />
+                    <span>1/57 Victoria St, Bunbury</span>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Button
+                        onClick={handleReserve}
+                        className="w-full font-bold py-3 rounded-xl text-sm tracking-wide flex items-center justify-center gap-2 border-0"
+                        style={{
+                          background: `linear-gradient(135deg, ${colors.goldLight} 0%, ${colors.gold} 55%, #f59e0b 100%)`,
+                          color: colors.dark,
+                          boxShadow: `0 10px 26px ${colors.gold}55`,
+                        }}
+                      >
+                        <UtensilsCrossed className="w-4 h-4" />
+                        Reserve Dad&rsquo;s Table
+                      </Button>
+                    </motion.div>
+
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Link to="/menu" onClick={handleClose} className="block">
+                        <Button
+                          variant="outline"
+                          className="w-full rounded-xl py-3 text-sm font-semibold tracking-wide border-2 bg-black/25 hover:bg-white/10 backdrop-blur-sm"
+                          style={{ borderColor: `${colors.goldLight}60`, color: colors.goldLight }}
+                        >
+                          View Menu
+                        </Button>
+                      </Link>
+                    </motion.div>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
