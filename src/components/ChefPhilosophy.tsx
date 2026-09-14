@@ -108,45 +108,18 @@ const ChefPhilosophy = () => {
               </p>
             </motion.div>
 
-            {/* Animated signature */}
+            {/* Chef name and title */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.8 }}
               className="relative flex flex-col items-center md:items-start"
             >
-              <motion.svg
-                width="250"
-                height="100"
-                viewBox="0 0 250 100"
-                className="text-accent"
-              >
-                <motion.path
-                  d="M 10 50 Q 50 20, 100 50 T 190 50"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 2, delay: 1 }}
-                />
-                <motion.text
-                  x="10"
-                  y="80"
-                  className="font-playfair italic"
-                  fill="currentColor"
-                  fontSize="20"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 2 }}
-                >
-                  Amardeep Singh
-                </motion.text>
-              </motion.svg>
-              <p className="text-sm text-muted-foreground mt-2">Executive Chef & Co-Founder</p>
+              <h3 className="text-2xl font-playfair italic text-accent font-medium">
+                Amardeep Singh
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">Executive Chef & Co-Founder</p>
             </motion.div>
 
             {/* Awards */}
