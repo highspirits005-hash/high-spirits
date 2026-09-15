@@ -315,13 +315,13 @@ const Menu = () => {
         <div className="container mx-auto px-4 md:px-6">
           <SearchBar query={searchQuery} onQuery={setSearchQuery} />
 
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center justify-between gap-3 min-w-0">
             <CategoryTabs categories={menuCategories} active={activeTab} onChange={(s) => setActiveTab(s)} showBuffet={buffetLoading || buffetCategories.length > 0} />
             <button
               onClick={() => setSidebarOpen(true)}
-              className="ml-2 px-3 py-2 rounded-full bg-card/70 border border-border text-muted-foreground hidden sm:inline-flex items-center gap-2"
+              className="mr-4 flex-shrink-0 px-4 py-2.5 rounded-full bg-card/50 border border-border/60 backdrop-blur-md text-muted-foreground text-sm font-semibold transition-colors hover:text-foreground hover:border-accent/50 hidden sm:inline-flex items-center gap-2"
             >
-              Menu
+              Browse All
             </button>
             {/* Floating menu for mobile */}
             {/* mobile: no sidebar button (we don't want the slidebar on phones) */}
