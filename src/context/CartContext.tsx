@@ -45,16 +45,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart]);
 
   const addToCart = (item: CartItem) => {
+    // Callers may add several at once (e.g. one buffet seat per guest).
+    const qty = Math.max(1, Math.round(item.quantity || 1));
     setCart((prevCart) => {
       const existingItem = prevCart.find((i) => i.id === item.id);
       if (existingItem) {
-        toast.success(`Added another ${item.title} to cart`);
+        toast.success(
+          qty > 1 ? `${qty} more ${item.title} added to cart` : `Added another ${item.title} to cart`
+        );
         return prevCart.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === item.id ? { ...i, quantity: i.quantity + qty } : i
         );
       }
-      toast.success(`${item.title} added to cart`);
-      return [...prevCart, { ...item, quantity: 1 }];
+      toast.success(qty > 1 ? `${qty} × ${item.title} added to cart` : `${item.title} added to cart`);
+      return [...prevCart, { ...item, quantity: qty }];
     });
   };
 

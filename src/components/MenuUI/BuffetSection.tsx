@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Flame, Leaf, UtensilsCrossed, Clock, Search } from 'lucide-react';
+import { Flame, Leaf, UtensilsCrossed, Clock, Search, ShoppingCart, Plus, Minus } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+
+// Negative so the buffet seat can never collide with a menu item's id.
+const BUFFET_CART_ID = -1;
+const MAX_GUESTS = 20;
 
 export interface BuffetItem {
   id: number;
@@ -27,6 +32,8 @@ const BuffetSection: React.FC<{
   query?: string;
 }> = ({ categories, loading = false, query = '' }) => {
   const [activeCourse, setActiveCourse] = useState<number | 'all'>('all');
+  const [guests, setGuests] = useState(1);
+  const { cart, addToCart } = useCart();
 
   // Search narrows the items inside each category; categories left with nothing drop out.
   const searched = useMemo(() => {
@@ -60,6 +67,21 @@ const BuffetSection: React.FC<{
     );
     return prices.length === 1 ? prices[0] : null;
   }, [categories]);
+
+  const seatsInCart = cart.find((i) => i.id === BUFFET_CART_ID)?.quantity ?? 0;
+
+  // Only sellable at one agreed per-person price; when the courses disagree
+  // they fall back to showing their own prices and no seat is offered.
+  const addBuffetToCart = () => {
+    if (sharedPrice === null) return;
+    addToCart({
+      id: BUFFET_CART_ID,
+      title: 'Buffet — All You Can Eat',
+      price: sharedPrice,
+      quantity: guests,
+    });
+    setGuests(1);
+  };
 
   const totalDishes = useMemo(
     () => searched.reduce((sum, c) => sum + (c.buffet_items || []).length, 0),
@@ -136,13 +158,64 @@ const BuffetSection: React.FC<{
           </div>
 
           {sharedPrice !== null && (
-            <div className="flex items-center justify-between gap-4 rounded-xl sm:rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 shrink-0 sm:flex-col sm:items-end sm:gap-0 sm:text-right">
-              <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground sm:order-2 sm:mt-1">
-                per person
-              </span>
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-accent leading-none sm:order-1">
-                ${sharedPrice.toFixed(2)}
-              </span>
+            <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:items-end">
+              <div className="flex items-center justify-between gap-4 rounded-xl sm:rounded-2xl border border-accent/30 bg-accent/10 px-4 py-3 sm:flex-col sm:items-end sm:gap-0 sm:text-right">
+                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground sm:order-2 sm:mt-1">
+                  per person
+                </span>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-accent leading-none sm:order-1">
+                  ${sharedPrice.toFixed(2)}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="flex items-center rounded-full border border-border bg-card/60 p-1">
+                  <button
+                    type="button"
+                    onClick={() => setGuests((g) => Math.max(1, g - 1))}
+                    disabled={guests <= 1}
+                    aria-label="One fewer guest"
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary/40 hover:text-foreground disabled:opacity-40 disabled:hover:bg-transparent"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span
+                    aria-live="polite"
+                    className="min-w-[2.25rem] text-center text-sm font-semibold text-foreground tabular-nums"
+                  >
+                    {guests}
+                    <span className="sr-only"> {guests === 1 ? 'guest' : 'guests'}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setGuests((g) => Math.min(MAX_GUESTS, g + 1))}
+                    disabled={guests >= MAX_GUESTS}
+                    aria-label="One more guest"
+                    className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-secondary/40 hover:text-foreground disabled:opacity-40 disabled:hover:bg-transparent"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={addBuffetToCart}
+                  className="flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-4 sm:px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-md shadow-accent/20 transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 sm:flex-none"
+                >
+                  <ShoppingCart className="h-4 w-4 shrink-0" />
+                  Add to Cart
+                  <span aria-hidden className="opacity-60">
+                    &middot;
+                  </span>
+                  <span className="tabular-nums">${(sharedPrice * guests).toFixed(2)}</span>
+                </button>
+              </div>
+
+              {seatsInCart > 0 && (
+                <p className="text-xs text-muted-foreground sm:text-right">
+                  {seatsInCart} {seatsInCart === 1 ? 'seat' : 'seats'} already in your cart
+                </p>
+              )}
             </div>
           )}
         </header>

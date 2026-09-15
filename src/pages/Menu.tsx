@@ -319,7 +319,7 @@ const Menu = () => {
             <CategoryTabs categories={menuCategories} active={activeTab} onChange={(s) => setActiveTab(s)} showBuffet={buffetLoading || buffetCategories.length > 0} />
             <button
               onClick={() => setSidebarOpen(true)}
-              className="mr-4 flex-shrink-0 px-4 py-2.5 rounded-full bg-card/50 border border-border/60 backdrop-blur-md text-muted-foreground text-sm font-semibold transition-colors hover:text-foreground hover:border-accent/50 hidden sm:inline-flex items-center gap-2"
+              className="mr-4 flex-shrink-0 px-4 py-2.5 rounded-full bg-accent border border-accent text-accent-foreground text-sm font-semibold shadow-md shadow-accent/25 transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 hidden sm:inline-flex items-center gap-2"
             >
               Browse All
             </button>
