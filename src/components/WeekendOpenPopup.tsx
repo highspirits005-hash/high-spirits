@@ -8,11 +8,8 @@ import {
   MapPin, 
   Phone, 
   UtensilsCrossed, 
-  Star, 
-  Wine, 
   ChevronRight,
-  Flame,
-  CheckCircle2
+  Flame
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
@@ -24,8 +21,8 @@ interface WeekendOpenPopupProps {
 }
 
 const DISMISS_KEY = 'hs_weekend_open_sep19_20_dismissed';
-// Popup remains active through the weekend until Monday morning 21st Sep
-const EVENT_CUTOFF = new Date('2026-09-21T02:00:00');
+// Popup automatically disappears after 20th Sept 23:59:59
+const EVENT_CUTOFF = new Date('2026-09-20T23:59:59');
 
 const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({ 
   isOpen: externalIsOpen, 
@@ -34,9 +31,11 @@ const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const { openPopup: openWalkInPopup } = useWalkInPopup();
 
+  // If past 20th Sept cutoff, automatically disappear completely
+  const isPastCutoff = new Date() > EVENT_CUTOFF;
+
   useEffect(() => {
-    // If past event cutoff, don't show automatically
-    if (new Date() > EVENT_CUTOFF) return;
+    if (isPastCutoff) return;
 
     const hasDismissed = sessionStorage.getItem(DISMISS_KEY);
     if (!hasDismissed && externalIsOpen === undefined) {
@@ -44,7 +43,11 @@ const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({
       const timer = setTimeout(() => setInternalIsOpen(true), 600);
       return () => clearTimeout(timer);
     }
-  }, [externalIsOpen]);
+  }, [externalIsOpen, isPastCutoff]);
+
+  if (isPastCutoff) {
+    return null;
+  }
 
   const showModal = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
 
@@ -69,12 +72,6 @@ const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({
     dark: '#080d0b',
     cardDark: '#0e1613',
   };
-
-  const highlights = [
-    { icon: UtensilsCrossed, title: 'Grand Indian Buffet', desc: 'Curries, Tandoori & Naans' },
-    { icon: Wine, title: 'Fine Cocktails & Bar', desc: 'Crafted Spirits & Pairings' },
-    { icon: Star, title: '5-Star Dining Ambience', desc: 'Warm Punjabi Hospitality' },
-  ];
 
   return (
     <AnimatePresence>
@@ -194,7 +191,7 @@ const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({
               </p>
 
               {/* Hours Grid */}
-              <div className="grid grid-cols-2 gap-2 mb-3.5">
+              <div className="grid grid-cols-2 gap-2 mb-4">
                 <div className="flex items-center gap-2 p-2 sm:p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
                   <Clock className="w-4 h-4 text-[#FBBF24] shrink-0" />
                   <div>
@@ -211,27 +208,8 @@ const WeekendOpenPopup: React.FC<WeekendOpenPopupProps> = ({
                 </div>
               </div>
 
-              {/* Highlights List */}
-              <div className="space-y-2 mb-5">
-                {highlights.map((item, idx) => (
-                  <div 
-                    key={idx}
-                    className="flex items-center gap-3 p-2 px-3 rounded-xl bg-gradient-to-r from-[#146854]/20 to-transparent border border-[#146854]/40"
-                  >
-                    <div className="w-7 h-7 rounded-lg bg-[#146854]/60 flex items-center justify-center text-[#FBBF24] shrink-0 border border-[#FBBF24]/20">
-                      <item.icon className="w-3.5 h-3.5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs sm:text-sm font-semibold text-white truncate">{item.title}</p>
-                      <p className="text-[11px] text-gray-400 truncate">{item.desc}</p>
-                    </div>
-                    <CheckCircle2 className="w-4 h-4 text-[#146854] shrink-0" />
-                  </div>
-                ))}
-              </div>
-
               {/* Location & Call Strip */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-2.5 rounded-xl bg-black/40 border border-white/10 text-xs mb-5">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 p-2.5 rounded-xl bg-black/40 border border-white/10 text-xs mb-4">
                 <div className="flex items-center gap-1.5 text-gray-300">
                   <MapPin className="w-3.5 h-3.5 text-[#FBBF24] shrink-0" />
                   <span className="truncate">1/57 Victoria St, Bunbury WA</span>
