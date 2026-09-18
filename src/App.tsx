@@ -7,6 +7,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import WalkInPopup from "./components/WalkInPopup";
 import { WalkInPopupProvider, useWalkInPopup } from "./context/WalkInPopupContext";
 import { CartProvider } from "./context/CartContext";
+import WeekendOpenPopup from "./components/WeekendOpenPopup";
 import Cart from "./components/Cart";
 
 import Index from "./pages/Index";
@@ -29,6 +30,7 @@ const AppContent = () => {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <WeekendOpenPopup />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
